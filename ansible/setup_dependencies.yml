@@ -1,0 +1,107 @@
+---
+- name: Update package cache
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Update package cache (Debian)
+      apt:
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Update package cache (RedHat)
+      dnf:
+        update_cache: yes
+      when: ansible_os_family == 'RedHat'
+
+- name: Install docker (Debian)
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Install docker and dependencie packages (Debian)
+      apt:
+        name:
+          - docker-ce
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+      when: ansible_os_family == 'Debian'
+      notify: Start docker service
+
+    - name: Install dnf-plugins-core dependencie (RedHat)
+      dnf:
+        name:
+          - dnf-plugins-core
+        state: present
+      when: ansible_os_family == 'RedHat'
+
+    - name: Add Docker repository (RedHat)
+      ansible.builtin.yum_repository:
+        name: docker-ce
+        description: Docker CE Stable - $basearch
+        baseurl: https://download.docker.com/linux/fedora/$releasever/$basearch/stable
+        enabled: yes
+        state: present
+      when: ansible_os_family == 'RedHat'
+
+  handlers:
+    - name: Start docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+- name: Install kubernetes
+  hosts: all
+  become: true
+  tasks:
+    - name: Add Kubernetes key (Debian)
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Add Kubernetes repository (Debian)
+      apt_repository:
+        repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Install Kubernetes packages (Debian)
+      apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+      when: ansible_os_family == 'Debian'
+      notify: Start kubernetes service
+
+    - name: Install Kubernetes packages (RedHat)
+      apt:
+        name:
+          - python3-apt
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+      when: ansible_os_family == 'RedHat'
+      notify: Start kubernetes service
+
+  handlers:
+    - name: Start kubernetes service
+      service:
+        name: kubelet
+        state: started
+        enabled: yes
+
+- name: Install k3s
+  hosts: all
+  become: true
+  tasks:
+    - name: Download and install k3s
+      command: "curl -sfL https://get.k3s.io | sh -"
+
