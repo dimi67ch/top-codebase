@@ -1,0 +1,39 @@
+---
+# tasks file for setup-snapd
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  become: true
+
+- name: Install snapd
+  apt:
+    name:
+      - snapd
+    state: present
+  become: true
+  register: install_snapd_result
+
+- name: Ensure snap is started and enabled on boot
+  ansible.builtin.systemd:
+    enabled: true
+    name: snapd
+    state: started
+  become: true
+
+- name: Reload udev # noqa 503
+  ansible.builtin.service:
+    name: udev
+    state: restarted
+  become: true
+  when: install_snapd_result.changed
+
+- name: Ensure snap core is installed
+  community.general.snap:
+    name: core
+    state: present
+  become: true
+
+#- name: Unconditionally reboot the machine with all defaults
+#  ansible.builtin.reboot:
+#  become: true
+#  when: install_snapd_result.changed

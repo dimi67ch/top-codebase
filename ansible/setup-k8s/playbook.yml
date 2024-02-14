@@ -1,0 +1,8 @@
+---
+- name: Kubernetes Setup
+  hosts: all
+
+  roles:
+    - snapd
+    - microk8s
+    - helm
