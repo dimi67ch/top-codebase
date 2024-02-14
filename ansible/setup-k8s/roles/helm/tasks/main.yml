@@ -39,8 +39,6 @@
     name: "{{ deploy_name }}"
     chart_ref: "{{ deploy_image }}"
     release_namespace: "{{ namespace }}"
-    values:
-      replicas: 2
   become: true
   environment: 
     KUBECONFIG: /home/{{ user }}/.kube/config

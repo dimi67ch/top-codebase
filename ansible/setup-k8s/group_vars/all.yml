@@ -5,4 +5,3 @@ repo_url: https://charts.bitnami.com/bitnami
 deploy_name: my-release
 deploy_image: bitnami/wordpress
 namespace: default
-replicas: 2
