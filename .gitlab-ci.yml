@@ -1,7 +1,7 @@
 stages:
   - lint
   - syntax-check
-   - deployment
+  - deployment
 
 variables:
   ANSIBLE_INVENTORY: 'ansible/setup-k8s/inventory.ini'
