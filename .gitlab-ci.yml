@@ -53,4 +53,4 @@ deployment:
        fi
      - echo "Deployment step concluded."
    only:
-     - master
+     - main
