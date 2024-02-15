@@ -1,7 +1,6 @@
 stages:
   - lint
   - syntax-check
-  # - dry-run
   # - deployment
 
 variables:
@@ -34,18 +33,6 @@ syntax-check:
     - merge_requests
     - main
 
-# dry-run:
-#   stage: dry-run
-#   image: debian:12
-#   before_script:
-#     - apt-get update && apt-get install -y ansible sshpass
-#   script:
-#     - echo "Starting Dry Run"
-#     - ansible-playbook $ANSIBLE_PLAYBOOK --check --inventory $ANSIBLE_INVENTORY 
-#     - echo "Ending Dry Run"
-#   only:
-#     - merge_requests
-#     - master
 
 
 # deployment:
@@ -54,8 +41,16 @@ syntax-check:
 #   before_script:
 #     - apt-get update && apt-get install -y ansible sshpass
 #   script:
-#     - echo "Starting Deployment"
-#     - ansible-playbook $ANSIBLE_PLAYBOOK --inventory $ANSIBLE_INVENTORY 
-#     - echo "Ending Deployment"
+#     - echo "Checking for changes in all.yml..."
+#     - |
+#       if git diff --name-only $CI_COMMIT_BEFORE_SHA $CI_COMMIT_SHA | grep -q 'group_vars/all.yml'; then
+#         echo "'all.yml' has changed, executing Ansible command..."
+#         ansible all -i inventory.ini -m include_role -a name=helm_deploy -e @group_vars/all.yml -K
+#       else
+#         echo "Starting Deployment"
+#         ansible-playbook $ANSIBLE_PLAYBOOK --inventory $ANSIBLE_INVENTORY 
+#         echo "Ending Deployment"
+#       fi
+#     - echo "Deployment step concluded."
 #   only:
 #     - master
