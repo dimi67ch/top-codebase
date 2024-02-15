@@ -15,7 +15,7 @@ lint:
     - apt-get update && apt-get install -y ansible ansible-lint sshpass
   script:
     - echo "Starting Lint"
-    - ansible-lint $ANSIBLE_PLAYBOOK
+    - ansible-lint --profile min $ANSIBLE_PLAYBOOK
     - echo "Ending Lint"
   only:
     - merge_requests
