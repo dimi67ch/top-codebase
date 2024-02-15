@@ -2,8 +2,10 @@
 user: student
 repos:
   bitnami: https://charts.bitnami.com/bitnami
+  gitlab: http://charts.gitlab.io/
 deployments: 
   wordpress: bitnami/wordpress
   mariadb: bitnami/mariadb
+  my-gitlab: gitlab/gitlab
 namespace: default
 processorarch: amd64
