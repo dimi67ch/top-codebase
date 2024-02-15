@@ -39,7 +39,7 @@ deployment:
    stage: deploy
    image: debian:12
    before_script:
-     - apt-get update && apt-get install -y ansible sshpass
+     - apt-get update && apt-get install -y ansible sshpass git
    script:
      - echo "Checking for changes in all.yml..."
      - |
