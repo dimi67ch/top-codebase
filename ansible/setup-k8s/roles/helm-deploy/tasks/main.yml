@@ -1,0 +1,17 @@
+---
+# tasks file for helm-deploy
+- name: "Add {{ repo_name }} helm repo"
+  kubernetes.core.helm_repository:
+    name: "{{ repo_name }}"
+    repo_url: "{{ repo_url }}"
+  become: true
+
+- name: Deploy {{ deploy_image }} using helm
+  #ansible-galaxy collection install community.kubernetes
+  kubernetes.core.helm:
+    name: "{{ deploy_name }}"
+    chart_ref: "{{ deploy_image }}"
+    release_namespace: "{{ namespace }}"
+  become: true
+  environment: 
+    KUBECONFIG: /home/{{ user }}/.kube/config
