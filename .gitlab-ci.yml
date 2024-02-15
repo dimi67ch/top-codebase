@@ -19,7 +19,7 @@ lint:
     - echo "Ending Lint"
   only:
     - merge_requests
-    - master
+    - main
 
 syntax-check:
   stage: syntax-check
@@ -32,7 +32,7 @@ syntax-check:
     - echo "Ending Syntax Check"
   only:
     - merge_requests
-    - master
+    - main
 
 # dry-run:
 #   stage: dry-run
