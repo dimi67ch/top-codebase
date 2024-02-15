@@ -6,4 +6,4 @@
     - snapd
     - microk8s
     - helm
-    - helm-deploy
+    - helm_deploy

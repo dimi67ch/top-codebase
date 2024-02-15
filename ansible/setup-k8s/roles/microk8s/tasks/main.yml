@@ -1,19 +1,19 @@
 ---
 # tasks file for microk8s
 - name: Install MicroK8s, kubectl via Snap
-  snap:
+  community.general.snap:
     name:
       - microk8s
       - kubectl
-    classic: yes
+    classic: true
   become: true
   register: install_microk8s_result
 
 - name: Add user to microk8s group
-  user:
+  ansible.builtin.user:
     name: "{{ user }}"
     groups: microk8s
-    append: yes
+    append: true
   become: true
   register: add_to_microk8s_group_result
 
@@ -22,21 +22,18 @@
     reset_connection
   when: add_to_microk8s_group_result.changed
 
-- name: Call echo
-  ansible.builtin.shell: echo
-
 - name: Wait for microk8s to be ready (up to 10 minutes)
   ansible.builtin.shell: /snap/bin/microk8s status --wait-ready --timeout 600
-  #when: install_microk8s_result.changed
+  when: install_microk8s_result.changed
 
 - name: Configure kubectl for user
-  shell: '/snap/bin/microk8s kubectl config view --raw > ~/.kube/config'
+  ansible.builtin.shell: '/snap/bin/microk8s kubectl config view --raw > ~/.kube/config'
 
 - name: Enable storage module in microk8s
   ansible.builtin.shell: /snap/bin/microk8s enable hostpath-storage
   become: true
 
 - name: Change permissions of kubectl config file
-  file:
+  ansible.builtin.file:
     path: ~/.kube/config
     mode: go-r
