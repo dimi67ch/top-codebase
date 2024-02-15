@@ -1,7 +1,8 @@
 ---
 user: student
-repo_name: bitnami
-repo_url: https://charts.bitnami.com/bitnami
-deploy_name: my-release
-deploy_image: bitnami/wordpress
+repos:
+  bitnami: https://charts.bitnami.com/bitnami
+deployments: 
+  wordpress: bitnami/wordpress
+  mariadb: bitnami/mariadb
 namespace: default
