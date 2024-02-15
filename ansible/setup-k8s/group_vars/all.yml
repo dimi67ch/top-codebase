@@ -6,3 +6,4 @@ deployments:
   wordpress: bitnami/wordpress
   mariadb: bitnami/mariadb
 namespace: default
+processorarch: amd64
