@@ -7,12 +7,12 @@ Informatik" (applied computer science) of the "Hochschule Worms"
 The following people contributed to this project:
 
 Team SecureSphere
-Felix Arns (PO)
-Nhat-Lam Luong (SM)
-Dimitrios Chalatsoglou (Developer)
-Kaan Demiroez (Developer)
-Junior Fomba-Tagang (Developer)
-Marcel Frizler (Developer)
-Maik Krawczyk (Developer)
-Jonas Ochs (Developer)
-Paul Sandler (Developer)
+- Felix Arns (Product Owner)
+- Nhat-Lam Luong (Scrum Master)
+- Dimitrios Chalatsoglou (Developer)
+- Kaan Demiroez (Developer)
+- Junior Fomba-Tagang (Developer)
+- Marcel Frizler (Developer)
+- Maik Krawczyk (Developer)
+- Jonas Ochs (Developer)
+- Paul Sandler (Developer)
