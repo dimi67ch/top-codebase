@@ -39,7 +39,7 @@ deployment:
    stage: deploy
    image: debian:12
    before_script:
-     - apt-get update && apt-get install -y ansible sshpass git ping
+     - apt-get update && apt-get install -y ansible sshpass git iputils-ping -y
    script:
      - echo "Checking for changes in all.yml..."
      - ping 143.93.245.88 -c 5
