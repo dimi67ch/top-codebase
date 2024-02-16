@@ -2,10 +2,15 @@
 user: student
 repos:
   bitnami: https://charts.bitnami.com/bitnami
-  gitlab: http://charts.gitlab.io/
+  nextcloud: https://nextcloud.github.io/helm/
 deployments: 
-  wordpress: bitnami/wordpress
-  mariadb: bitnami/mariadb
-  my-gitlab: gitlab/gitlab
-namespace: default
+  - release_name: "wordpress"
+    chart_ref: "bitnami/wordpress"
+  - release_name: "gitlab"
+    chart_ref: "gitlab/gitlab"
+    set_values:
+      - value: "global.hosts.domain=example.com"
+      - value: "global.hosts.externalIP=10.10.10.10"
+      - value: "certmanager-issuer.email=me@example.com"
+      - value: "postgresql.image.tag=13.6.0"
 processorarch: amd64

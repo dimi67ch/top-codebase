@@ -7,12 +7,35 @@
   become: true
   loop: "{{ repos | dict2items }}"
 
-- name: "Deploy helm charts"
+- name: Deploy Helm charts
   kubernetes.core.helm:
-    name: "{{ item.key }}"
-    chart_ref: "{{ item.value }}"
-    release_namespace: "{{ namespace }}"
-  become: true
-  environment:
-    KUBECONFIG: /home/{{ user }}/.kube/config
-  loop: "{{ deployments | dict2items }}"
+    release_name: "{{ item.release_name }}"
+    release_namespace: "{{ item.release_namespace | default('default') }}"
+    release_state: "{{ item.release_state | default('present') }}"
+    chart_ref: "{{ item.chart_ref if ((item.release_state is defined and item.release_state == 'present') or item.release_state is not defined) else omit }}"
+    chart_repo_url: "{{ item.chart_repo_url | default(omit) }}"
+    chart_version: "{{ item.chart_version | default(omit) }}"
+    api_key: "{{ item.api_key | default(omit) }}" # Can also be specified via K8S_AUTH_API_KEY environment variable.
+    atomic: "{{ item.atomic | default(false) }}"
+    binary_path: "{{ item.binary_path | default(omit) }}"
+    ca_cert: "{{ item.ca_cert | default(omit) }}" # Can also be specified via K8S_AUTH_SSL_CA_CERT environment variable.
+    context: "{{ item.context | default(omit) }}" # Can also be specified via K8S_AUTH_CONTEXT environment variable.
+    create_namespace: "{{ item.create_namespace | default(false) }}"
+    dependency_update: "{{ item.dependency_update | default(false) }}" # Requires the dependencies block is present in chart.yaml or requirements.yaml.
+    disable_hook: "{{ item.disable_hook | default(false) }}"
+    force: "{{ item.force | default(false) }}"
+    history_max: "{{ item.history_max | default(omit) }}"
+    host: "{{ item.host | default(omit) }}" # Can also be specified via K8S_AUTH_HOST environment variable.
+    kubeconfig: "{{ item.kubeconfig | default(omit) }}" # Can also be provided as a dictionary, or specified via K8S_AUTH_KUBECONFIG environment variable.
+    post_renderer: "{{ item.post_renderer | default(omit) }}"
+    purge: "{{ item.purge | default(true) }}"
+    release_values: "{{ item.release_values | default(omit) }}"
+    replace: "{{ item.replace | default(false) }}"
+    set_values: "{{ item.set_values | default(omit) }}"
+    skip_crds: "{{ item.skip_crds | default(false) }}"
+    timeout: "{{ item.timeout | default('5m0s') }}"
+    update_repo_cache: "{{ item.update_repo_cache | default(false) }}"
+    validate_certs: "{{ item.validate_certs | default(true) }}"
+    values_files: "{{ item.values_files | default(omit) }}"
+    wait: "{{ item.wait | default(false) }}"
+  loop: "{{ deployments }}"
