@@ -6,8 +6,9 @@ repositories:
 deployments:
   - name: "wordpress"
     chart_ref: "bitnami/wordpress"
-#   set_values:
-#   - value: "replicaCount=2"
+    set_values:
+      - value: "service.nodePorts.http=32500"
+#     - value: "replicaCount=2"
   - name: "postgresql"
     chart_ref: bitnami/postgresql
   - name: "mariadb"
