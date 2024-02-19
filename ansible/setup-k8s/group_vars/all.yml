@@ -6,12 +6,16 @@ repositories:
 deployments:
   - name: "wordpress"
     chart_ref: "bitnami/wordpress"
+#   set_values:
+#   - value: "replicaCount=2"
   - name: "postgresql"
     chart_ref: bitnami/postgresql
   - name: "mariadb"
     chart_ref: bitnami/mariadb
   - name: "phpmyadmin"
     chart_ref: bitnami/phpmyadmin
+#   set_values:
+#   - value: "replicas=2"
   - name: "apache"
     chart_ref: bitnami/apache
-processorarch: arm64
+processorarch: amd64
