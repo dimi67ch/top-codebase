@@ -1,15 +1,27 @@
 ---
 # tasks file for helm-deploy
-- name: "Add helm repos"
+- name: Manage Helm repositories
   kubernetes.core.helm_repository:
-    name: "{{ item.key }}"
-    repo_url: "{{ item.value }}"
-  become: true
-  loop: "{{ repos | dict2items }}"
+    repo_name: "{{ item.repo_name }}"
+    repo_state: "{{ item.repo_state | default('present') }}"
+    repo_url: "{{ item.repo_url if ((item.repo_state is defined and item.repo_state == 'present') or item.repo_state is not defined) else omit }}"
+    api_key: "{{ item.api_key | default(omit) }}" # Can also be specified via K8S_AUTH_API_KEY environment variable.
+    binary_path: "{{ item.binary_path | default(omit) }}"
+    ca_cert: "{{ item.ca_cert | default(omit) }}" # Can also be specified via K8S_AUTH_SSL_CA_CERT environment variable.
+    context: "{{ item.context | default(omit) }}" # Can also be specified via K8S_AUTH_CONTEXT environment variable.
+    force_update: "{{ item.force_update | default(false) }}"
+    host: "{{ item.host | default(omit) }}" # Can also be specified via K8S_AUTH_HOST environment variable.
+    kubeconfig: "{{ item.kubeconfig | default(omit) }}" # Can also be provided as a dictionary, or specified via K8S_AUTH_KUBECONFIG environment variable.
+    pass_credentials: "{{ item.pass_credentials | default(false) }}"
+    repo_username: "{{ item.repo_username if item.repo_password is defined else omit }}"
+    repo_password: "{{ item.repo_password if item.repo_username is defined else omit }}"
+    validate_certs: "{{ item.validate_certs | default(true) }}"
+  loop: "{{ repositories }}"
 
 - name: Deploy Helm charts
   kubernetes.core.helm:
-    release_name: "{{ item.release_name }}"
+    name: "{{ item.name }}"
+    release_name: "{{ item.release_name | default(omit) }}"
     release_namespace: "{{ item.release_namespace | default('default') }}"
     release_state: "{{ item.release_state | default('present') }}"
     chart_ref: "{{ item.chart_ref if ((item.release_state is defined and item.release_state == 'present') or item.release_state is not defined) else omit }}"

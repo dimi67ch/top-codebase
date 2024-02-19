@@ -1,16 +1,11 @@
 ---
 user: student
-repos:
-  bitnami: https://charts.bitnami.com/bitnami
-  nextcloud: https://nextcloud.github.io/helm/
-deployments: 
-  - release_name: "wordpress"
+repositories:
+  - repo_name: "bitnami"
+    repo_url: "https://charts.bitnami.com/bitnami"
+deployments:
+  - name: "wordpress"
     chart_ref: "bitnami/wordpress"
-  - release_name: "gitlab"
-    chart_ref: "gitlab/gitlab"
-    set_values:
-      - value: "global.hosts.domain=example.com"
-      - value: "global.hosts.externalIP=10.10.10.10"
-      - value: "certmanager-issuer.email=me@example.com"
-      - value: "postgresql.image.tag=13.6.0"
+  - name: "nginx"
+    chart_ref: "bitnami/nginx"
 processorarch: amd64
