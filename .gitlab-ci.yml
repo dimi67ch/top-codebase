@@ -38,7 +38,7 @@ deployment:
         chmod 644 ~/.ssh/known_hosts
       fi
   script:
-    - ssh student@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
+    - ssh -o StrictHostKeyChecking=no student@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
   only:
     - main
     - merge_requests
