@@ -50,7 +50,6 @@ deployment:
          echo "Ending Deployment"
        fi
      - echo "Deployment step concluded."
-   only:
-     - main
    rules: 
      - if: '$CI_PROJECT_NAME == "codebase-local"'
+     - if: '$CI_COMMIT_BRANCH == "main"'
