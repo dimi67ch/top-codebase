@@ -1,6 +1,5 @@
 stages:
   - lint
-  - syntax-check
   - deployment
 
 variables:
@@ -13,26 +12,15 @@ lint:
   before_script:
     - apt-get update && apt-get install -y ansible ansible-lint sshpass
   script:
+    - echo "Starting Syntax Check"
+    - ansible-playbook $ANSIBLE_PLAYBOOK --syntax-check
+    - echo "Ending Syntax Check"
     - echo "Starting Lint"
     - ansible-lint --profile min $ANSIBLE_PLAYBOOK
     - echo "Ending Lint"
   only:
-    - merge_requests
     - main
-
-syntax-check:
-  stage: syntax-check
-  image: debian:12
-  before_script:
-    - apt-get update && apt-get install -y ansible sshpass
-  script:
-    - echo "Starting Syntax Check"
-    - ansible-playbook $ANSIBLE_PLAYBOOK --syntax-check 
-    - echo "Ending Syntax Check"
-  only:
     - merge_requests
-    - main
-
 
 deployment:
   stage: deployment
@@ -58,4 +46,5 @@ deployment:
     - echo "Deployment step concluded."
   only:
     - main
+    - merge_requests
 
