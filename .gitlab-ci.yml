@@ -10,7 +10,7 @@ lint:
   stage: lint
   image: alpine:latest
   before_script:
-    - apk update && apk add --no-cache ansible ansible-lint sshpass openssh-client
+    - apk update && apk add --no-cache ansible-lint
   script:
     - echo "Starting Syntax Check"
     - ansible-playbook $ANSIBLE_PLAYBOOK --syntax-check
@@ -26,9 +26,9 @@ deployment:
   stage: deployment
   image: alpine:latest
   before_script:
-    - apk update && apk add --no-cache ansible sshpass git iputils-ping openssh-client
     - |
       if [ "$CI_PROJECT_NAME" == "codebase-local" ]; then
+        apk update && apk add --no-cache ansible sshpass git iputils-ping openssh-client
         command -v ssh-agent >/dev/null || ( apk add --no-cache openssh-client )
         eval $(ssh-agent -s)
         echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
