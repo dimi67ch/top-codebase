@@ -4,13 +4,13 @@ stages:
 
 variables:
   ANSIBLE_INVENTORY: 'ansible/setup-k8s/inventory.ini'
-  ANSIBLE_PLAYBOOK: 'ansible/setup-k8s/playbook.yml'       
+  ANSIBLE_PLAYBOOK: 'ansible/setup-k8s/playbook.yml'
 
 lint:
   stage: lint
-  image: debian:12
+  image: alpine:latest
   before_script:
-    - apt-get update && apt-get install -y ansible ansible-lint sshpass
+    - apk update && apk add --no-cache ansible ansible-lint sshpass openssh-client
   script:
     - echo "Starting Syntax Check"
     - ansible-playbook $ANSIBLE_PLAYBOOK --syntax-check
@@ -24,12 +24,12 @@ lint:
 
 deployment:
   stage: deployment
-  image: debian:12
-  before_script: 
-    - apt-get update && apt-get install -y ansible sshpass git iputils-ping
+  image: alpine:latest
+  before_script:
+    - apk update && apk add --no-cache ansible sshpass git iputils-ping openssh-client
     - |
       if [ "$CI_PROJECT_NAME" == "codebase-local" ]; then
-        command -v ssh-agent >/dev/null || ( apt-get install -y openssh-client )
+        command -v ssh-agent >/dev/null || ( apk add --no-cache openssh-client )
         eval $(ssh-agent -s)
         echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
         mkdir -p ~/.ssh
@@ -50,11 +50,10 @@ deployment:
         ansible all -i $ANSIBLE_INVENTORY -m include_role -a name=helm_deploy -e @group_vars/all.yml -K
       else
         echo "Starting Deployment"
-        ansible-playbook $ANSIBLE_PLAYBOOK --inventory $ANSIBLE_INVENTORY 
+        ansible-playbook $ANSIBLE_PLAYBOOK --inventory $ANSIBLE_INVENTORY
         echo "Ending Deployment"
       fi
     - echo "Deployment step concluded."
   only:
     - main
     - merge_requests
-
