@@ -10,7 +10,7 @@ lint:
   stage: lint
   image: alpine:latest
   before_script:
-    - apk update && apk add --no-cache ansible-lint
+    - apk update && apk add --no-cache ansible ansible-lint
   script:
     - echo "Starting Syntax Check"
     - ansible-playbook $ANSIBLE_PLAYBOOK --syntax-check
