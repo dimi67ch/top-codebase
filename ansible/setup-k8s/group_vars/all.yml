@@ -3,33 +3,18 @@ user: student
 repositories:
   - repo_name: "bitnami"
     repo_url: "https://charts.bitnami.com/bitnami"
+  - repo_name: "gitlab-rlp"
+    repo_url: "https://gitlab.rlp.net/api/v4/projects/39843/packages/helm/stable"
+    repo_username: "gitlab+deploy-token-247"
+    repo_password: "gldt-G4NVnsZx8yx56MpXRvsC"
 deployments:
-  - name: "wordpress"
-    chart_ref: "bitnami/wordpress"
-    set_values:
-      - value: "service.nodePorts.http=32500"
-#     - value: "image.tag=6.0.0"
-#     - value: "replicaCount=2"
-  - name: "postgresql"
-    chart_ref: bitnami/postgresql
-    set_values:
-      - value: "primary.service.type=LoadBalancer"
-      - value: "primary.service.nodePorts.postgresql=32501"
-  - name: "mariadb"
-    chart_ref: bitnami/mariadb
-    set_values:
-      - value: "primary.service.type=LoadBalancer"
-      - value: "primary.service.nodePorts.mysql=32502"
-      - value: "auth.rootPassword=sTuD3nT#"
-  - name: "phpmyadmin"
-    chart_ref: bitnami/phpmyadmin
-    set_values:
-      - value: "service.type=LoadBalancer"
-      - value: "service.nodePorts.http=32503"
-#   set_values:
-#   - value: "replicas=2"
-  - name: "apache"
-    chart_ref: bitnami/apache
-    set_values:
-      - value: "service.nodePorts.http=32504"
+  - name: "order-service"
+    chart_ref: "gitlab-rlp/order-service"
+  - name: "auth-service"
+    chart_ref: "gitlab-rlp/auth-service"
+  - name: "customer-service"
+    chart_ref: "gitlab-rlp/customer-service"
 processorarch: amd64
+container_registry_url: registry.gitlab.rlp.net/top/24s/secplay/microservices
+container_registry_username: gitlab+deploy-token-248
+container_registry_password: gldt-GC36cqLShMoyU89BPudo
