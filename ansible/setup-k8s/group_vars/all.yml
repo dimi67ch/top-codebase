@@ -20,6 +20,7 @@ deployments:
     set_values:
       - value: "primary.service.type=LoadBalancer"
       - value: "primary.service.nodePorts.mysql=32502"
+      - value: "auth.rootPassword=sTuD3nT#"
   - name: "phpmyadmin"
     chart_ref: bitnami/phpmyadmin
     set_values:
