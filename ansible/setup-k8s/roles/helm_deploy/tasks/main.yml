@@ -18,6 +18,21 @@
     validate_certs: "{{ item.validate_certs | default(true) }}"
   loop: "{{ repositories }}"
 
+- name: Get list of installed Helm releases
+  command:
+    cmd: helm list -Ao yaml
+  register: installed_releases
+  changed_when: false
+
+- name: Remove Helm releases not listed in configuration
+  kubernetes.core.helm:
+    name: "{{ item.name }}"
+    state: absent
+    release_namespace: "{{ item.namespace }}"
+    wait: true
+  loop: "{{ installed_releases.stdout | from_yaml }}"
+  when: item not in deployments | map(attribute='name')
+
 - name: Deploy Helm charts
   kubernetes.core.helm:
     name: "{{ item.name }}"
