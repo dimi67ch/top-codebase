@@ -41,6 +41,11 @@
     mode: go-r
   when: install_microk8s_result.changed
 
-- name: Add secret for private gitlab docker registry
-  ansible.builtin.shell: "kubectl create secret docker-registry gitlab-rlp --docker-server={{ container_registry_url }} --docker-username={{ container_registry_username }} --docker-password={{ container_registry_password }}"
-  become: true
+- name: Copy container registry secrets into target server
+  ansible.builtin.copy:
+    src: docker_registry_config.yaml
+    dest: ~/docker_registry_config.yaml
+
+- name: Apply container registry secret
+  ansible.builtin.shell:
+    cmd: /snap/bin/kubectl apply -f ~/docker_registry_config.yaml
