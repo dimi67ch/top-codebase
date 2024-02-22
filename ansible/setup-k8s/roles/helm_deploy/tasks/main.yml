@@ -31,7 +31,7 @@
     release_namespace: "{{ item.namespace }}"
     wait: true
   loop: "{{ installed_releases.stdout | from_yaml }}"
-  when: item not in deployments | map(attribute='name')
+  when: item.name not in deployments | map(attribute='name')
 
 - name: Deploy Helm charts
   kubernetes.core.helm:
