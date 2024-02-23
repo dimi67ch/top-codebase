@@ -1,5 +1,5 @@
 ---
-user: student
+user: securityplayground
 repositories:
   - repo_name: "bitnami"
     repo_url: "https://charts.bitnami.com/bitnami"
@@ -9,42 +9,43 @@ repositories:
     repo_password: "gldt-G4NVnsZx8yx56MpXRvsC"
 deployments:
   # DEPLOY OWN HELM CHARTS
-  - name: "order-service"
-    chart_ref: "gitlab-rlp/order-service"
-  - name: "auth-service"
-    chart_ref: "gitlab-rlp/auth-service"
-  - name: "customer-service"
-    chart_ref: "gitlab-rlp/customer-service"
+  # - name: "order-service"
+  #   chart_ref: "gitlab-rlp/order-service"
+  # - name: "auth-service"
+  #   chart_ref: "gitlab-rlp/auth-service"
+  # - name: "customer-service"
+  #   chart_ref: "gitlab-rlp/customer-service"
 
-  # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY
-# - name: "wordpress"
-#   chart_ref: "bitnami/wordpress"
-#   set_values:
-#     - value: "service.nodePorts.http=32500"
-#     - value: "image.tag=6.0.0"
-#     - value: "replicaCount=2"
-# - name: "postgresql"
-#   chart_ref: bitnami/postgresql
-#   set_values:
-#     - value: "primary.service.type=LoadBalancer"
-#     - value: "primary.service.nodePorts.postgresql=32501"
-# - name: "mariadb"
-#   chart_ref: bitnami/mariadb
-#   set_values:
-#     - value: "primary.service.type=LoadBalancer"
-#     - value: "primary.service.nodePorts.mysql=32502"
-#     - value: "auth.rootPassword=sTuD3nT#"
-# - name: "phpmyadmin"
-#   chart_ref: bitnami/phpmyadmin
-#   set_values:
-#     - value: "service.type=LoadBalancer"
-#     - value: "service.nodePorts.http=32503"
-#   set_values:
-#   - value: "replicas=2"
-# - name: "apache"
-#   chart_ref: bitnami/apache
-#   set_values:
-#     - value: "service.nodePorts.http=32504"
+  # # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY
+  # - name: "wordpress"
+  #   chart_ref: "bitnami/wordpress"
+  #   set_values:
+  #     - value: "service.nodePorts.http=32500"
+  #     - value: "image.tag=6.0.0"
+  #     - value: "replicaCount=2"
+  # - name: "postgresql"
+  #   chart_ref: bitnami/postgresql
+  #   set_values:
+  #     - value: "primary.service.type=LoadBalancer"
+  #     - value: "primary.service.nodePorts.postgresql=3000"
+  # - name: "mariadb"
+  #   chart_ref: bitnami/mariadb
+  #   set_values:
+  #     - value: "primary.service.type=LoadBalancer"
+  #     - value: "primary.service.nodePorts.mysql=32502"
+  #     - value: "auth.rootPassword=sTuD3nT#"
+  # - name: "phpmyadmin"
+  #   chart_ref: bitnami/phpmyadmin
+  #   set_values:
+  #     - value: "service.type=LoadBalancer"
+  #     - value: "service.nodePorts.http=32503"
+  #     - value: "replicas=2"
+  # - name: "apache"
+  #   chart_ref: bitnami/apache
+  #   set_values:
+  #     - value: "service.nodePorts.http=32504"
+  #     - value: "image.tag=2.3.0"
+    
 
 arch: amd64
 container_registry_url: registry.gitlab.rlp.net/top/24s/secplay/microservices
