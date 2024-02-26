@@ -9,7 +9,7 @@
     binary_path: "{{ item.binary_path | default(omit) }}"
     ca_cert: "{{ item.ca_cert | default(omit) }}" # Can also be specified via K8S_AUTH_SSL_CA_CERT environment variable.
     context: "{{ item.context | default(omit) }}" # Can also be specified via K8S_AUTH_CONTEXT environment variable.
-    force_update: "{{ item.force_update | default(false) }}"
+    force_update: "{{ item.force_update | default(true) }}"
     host: "{{ item.host | default(omit) }}" # Can also be specified via K8S_AUTH_HOST environment variable.
     kubeconfig: "{{ item.kubeconfig | default(omit) }}" # Can also be provided as a dictionary, or specified via K8S_AUTH_KUBECONFIG environment variable.
     pass_credentials: "{{ item.pass_credentials | default(false) }}"
