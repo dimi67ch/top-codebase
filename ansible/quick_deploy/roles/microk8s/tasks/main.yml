@@ -30,8 +30,8 @@
   ansible.builtin.shell: '/snap/bin/microk8s kubectl config view --raw > ~/.kube/config'
   when: install_microk8s_result.changed
 
-- name: Enable storage module in microk8s
-  ansible.builtin.shell: /snap/bin/microk8s enable hostpath-storage
+- name: Enable storage and ingress module in microk8s
+  ansible.builtin.shell: /snap/bin/microk8s enable hostpath-storage ingress
   become: true
   when: install_microk8s_result.changed
 
@@ -49,3 +49,12 @@
 - name: Apply container registry secret
   ansible.builtin.shell:
     cmd: /snap/bin/kubectl apply -f ~/docker_registry_config.yaml
+  
+- name: Copy ingress configurations file into target server
+  ansible.builtin.copy:
+    src: http-ingress.yaml
+    dest: ~/http-ingress.yaml
+
+- name: Apply http ingress configuration
+  ansible.builtin.shell:
+    cmd: /snap/bin/kubectl apply -f http-ingress.yaml
