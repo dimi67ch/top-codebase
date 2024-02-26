@@ -51,6 +51,7 @@ deployment:
         ansible target -i inventory.ini -m include_role -a name=helm_deploy -e @group_vars/all.yml
       else
         echo "no changes in "all.yml""
+        ansible-playbook $ANSIBLE_PLAYBOOK --inventory $ANSIBLE_INVENTORY
       fi
     - echo "Deployment step concluded."
   only:
