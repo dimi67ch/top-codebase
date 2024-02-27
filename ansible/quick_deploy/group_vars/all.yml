@@ -1,5 +1,4 @@
 ---
-user: securityplayground
 repositories:
   - repo_name: "bitnami"
     repo_url: "https://charts.bitnami.com/bitnami"
@@ -24,7 +23,7 @@ deployments:
   # - name: "wordpress"
   #   chart_ref: "bitnami/wordpress"
   #   set_values:
-  #    - value: "service.nodePorts.http=3000" # Port
+  #    - value: "service.nodePorts.http=32000" # Port
   #    - value: "image.tag=6.0.0"
   #    - value: "replicaCount=2"
 
