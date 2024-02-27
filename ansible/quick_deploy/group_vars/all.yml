@@ -18,37 +18,46 @@ deployments:
     - name: "secplay-website"
       chart_ref: "gitlab-rlp/secplay-website"
 
-  # # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY
+  # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY
+
+  # WORDPRESS
   # - name: "wordpress"
   #   chart_ref: "bitnami/wordpress"
   #   set_values:
-  #     - value: "service.nodePorts.http=32500"
+  #     - value: "service.nodePorts.http=32000" # Port
   #     - value: "image.tag=6.0.0"
   #     - value: "replicaCount=2"
+
+  # POSTGRESQL
   # - name: "postgresql"
   #   chart_ref: bitnami/postgresql
   #   set_values:
   #     - value: "primary.service.type=LoadBalancer"
-  #     - value: "primary.service.nodePorts.postgresql=3000"
+  #     - value: "primary.service.nodePorts.postgresql=32010" # Port
+
+  # MARIADB
   # - name: "mariadb"
   #   chart_ref: bitnami/mariadb
   #   set_values:
   #     - value: "primary.service.type=LoadBalancer"
-  #     - value: "primary.service.nodePorts.mysql=32502"
+  #     - value: "primary.service.nodePorts.mysql=32020" # Port
   #     - value: "auth.rootPassword=sTuD3nT#"
+
+  # PHPMYADMIN
   # - name: "phpmyadmin"
   #   chart_ref: bitnami/phpmyadmin
   #   set_values:
   #     - value: "service.type=LoadBalancer"
-  #     - value: "service.nodePorts.http=32503"
+  #     - value: "service.nodePorts.http=32030" # Port
   #     - value: "replicas=2"
+
+  # APACHE
   # - name: "apache"
   #   chart_ref: bitnami/apache
   #   set_values:
-  #     - value: "service.nodePorts.http=32504"
-  #     - value: "image.tag=2.3.0"
+  #     - value: "service.type=LoadBalancer" 
+  #     - value: "service.nodePorts.http=32040" # Port
     
-
 arch: amd64
 container_registry_url: registry.gitlab.rlp.net/top/24s/secplay/microservices
 container_registry_username: gitlab+deploy-token-248
