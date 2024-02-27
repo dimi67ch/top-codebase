@@ -17,7 +17,7 @@ deployments:
   - name: "secplay-website"
     chart_ref: "gitlab-rlp/secplay-website"
 
-  # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY (Port 32000 - 32767)
+  # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY (Port 32001 - 32767)
 
   # WORDPRESS
   # - name: "wordpress"
