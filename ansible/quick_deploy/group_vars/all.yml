@@ -8,25 +8,25 @@ repositories:
     repo_username: "gitlab+deploy-token-247"
     repo_password: "gldt-G4NVnsZx8yx56MpXRvsC"
 deployments:
-  # DEPLOY OWN HELM CHARTS
+  # DEPLOY OWN HELM CHARTS (Port 30000 - 32000)
   # - name: "order-service"
   #   chart_ref: "gitlab-rlp/order-service"
   # - name: "auth-service"
   #   chart_ref: "gitlab-rlp/auth-service"
   # - name: "customer-service"
   #   chart_ref: "gitlab-rlp/customer-service"
-    - name: "secplay-website"
-      chart_ref: "gitlab-rlp/secplay-website"
+  - name: "secplay-website"
+    chart_ref: "gitlab-rlp/secplay-website"
 
-  # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY
+  # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY (Port 32000 - 32767)
 
   # WORDPRESS
   # - name: "wordpress"
   #   chart_ref: "bitnami/wordpress"
   #   set_values:
-  #     - value: "service.nodePorts.http=32000" # Port
-  #     - value: "image.tag=6.0.0"
-  #     - value: "replicaCount=2"
+  #    - value: "service.nodePorts.http=3000" # Port
+  #    - value: "image.tag=6.0.0"
+  #    - value: "replicaCount=2"
 
   # POSTGRESQL
   # - name: "postgresql"
