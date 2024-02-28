@@ -1,6 +1,6 @@
 # Microk8s Ansible Playbook
 
-This playbook installs and configures a kubernetes cluster with [microk8s](https://microk8s.io/) on a debian based system. Furthermore, it installs and configures [helm](https://helm.sh/) which is a package manager for kubernetes. It can be used to deploy applications and services to a kubernetes cluster.
+This playbook installs and configures a Kubernetes cluster with [microk8s](https://microk8s.io/) on a debian based system. Furthermore, it installs and configures [helm](https://helm.sh/) which is a package manager for kubernetes. It can be used to deploy applications and services to a kubernetes cluster.
 
 ## Installation
 
