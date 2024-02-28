@@ -47,17 +47,19 @@ This playbook installs and configures a kubernetes cluster with [microk8s](https
 
 ## Running without promting for password
 
+### SSH keys
+
+1. Generate a new ssh key `ssh-keygen -t ed25519`
+> **Note:** If you are using a legacy system that doesn't support the Ed25519 algorithm, use: `ssh-keygen -t rsa -b 4096`
+
+2. Copy the public key to the target machine `ssh-copy-id <username>@<target-ip>`. Replace `<username>` with your username and `<target-ip>` with the IP address of the target machine.
+3. Enter the password for the target machine when prompted.
+
 ### Passwordless sudo
 
 1. Edit the sudoers file on the target machine `sudo visudo`
 2. Add the following line to the file `<username> ALL=(ALL) NOPASSWD: ALL`. Replace `<username>` with your username.
 3. Save the file and exit the editor.
-
-### SSH keys
-
-1. Generate a new ssh key `ssh-keygen`
-2. Copy the public key to the target machine `ssh-copy-id <username>@<target-ip>`. Replace `<username>` with your username and `<target-ip>` with the IP address of the target machine.
-3. Enter the password for the target machine when prompted.
 
 ## License
 
