@@ -38,15 +38,15 @@ sudo apt install ansible
 
 1. Install [Homebrew](https://brew.sh/)
 
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+    ```bash
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
 
 2. Install [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-macos)
 
-```bash
-brew install ansible
-```
+    ```bash
+    brew install ansible
+    ```
 
 ## Usage
 
