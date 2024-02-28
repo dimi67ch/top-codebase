@@ -63,6 +63,6 @@ This playbook installs and configures a kubernetes cluster with [microk8s](https
 
 ## License
 
-This project is licensed under the European Union Public License v. 1.2 or later.
+This project is licensed under the European Union Public License v. 1.2.
 
 See [LICENSE/EUPL v1_2 EN.txt](https://gitlab.rlp.net/top/24s/secplay/codebase/-/blob/43c8be19f6db45cee733edb694ba311fff694993/LICENSE/EUPL%20v1_2%20EN.txt)
