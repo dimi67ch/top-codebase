@@ -1,6 +1,6 @@
 ---
 - name: Kubernetes Setup
-  hosts: all
+  hosts: nuc
 
   roles:
     - snapd
