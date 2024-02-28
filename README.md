@@ -33,8 +33,13 @@ This playbook installs and configures a kubernetes cluster with [microk8s](https
 
 1. Clone this repository `git clone https://gitlab.rlp.net/top/24s/secplay/codebase.git`
 2. Change into the directory `cd codebase/ansible/quick_deploy`
-3. Edit the inventory file with your preferences (e.g. the IP address of the target machine)
-3. Run the playbook `ansible-playbook -i inventory.ini playbook.yml -Kk`
+3. Edit the inventory file `inventory.ini` with your preferences (e.g. the IP address of the target machine)
+4. Edit `group_vars/all.yml` to specify:
+    1. which repo should be added
+    2. which application should be deployed
+    3. on what processor architecture the system is running on
+    4. the credentials to your private container registry
+5. Run the playbook `ansible-playbook -i inventory.ini playbook.yml -Kk`
 
 > **Note:** The `-K` flag is used to prompt for the sudo password. If you want to run the playbook without the prompt, you must edit the sudoers file on the target machine to allow passwordless sudo for your user.
 
