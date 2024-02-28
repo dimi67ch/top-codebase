@@ -7,39 +7,67 @@ This playbook installs and configures a Kubernetes cluster with [microk8s](https
 ### Windows
 
 1. Install [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
-    1. `wsl --install`
-    2. `wsl --set-default-version 2`
+    ```bash
+    wsl --install
+    wsl --set-default-version 2
+    ```
+   
 2. Install [Ubuntu on WSL2](https://apps.microsoft.com/detail/9pdxgncfsczv?hl=en-us&gl=US)
-    1. `wsl --install -d Ubuntu`
-    2. Open Ubuntu from the start menu and set up a user
-    3. `sudo apt update`
-    4. `sudo apt upgrade`
+    ```bash
+    wsl --install -d Ubuntu
+    ```
+    Open Ubuntu from the start menu and set up a user
+    ```bash
+    sudo apt update
+    sudo apt upgrade
+    ```
+
 3. Install [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu)
-    1. `sudo apt install ansible`
+    ```bash
+    sudo apt install ansible
+    ```
 
 ### Ubuntu
 
-1. `sudo apt update`
-2. `sudo apt install ansible`
+```bash
+sudo apt update
+sudo apt install ansible
+```
 
 ### MacOS
 
 1. Install [Homebrew](https://brew.sh/)
-    1. `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
 2. Install [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-macos)
-    1. `brew install ansible`
+
+```bash
+brew install ansible
+```
 
 ## Usage
 
-1. Clone this repository `git clone https://gitlab.rlp.net/top/24s/secplay/codebase.git`
-2. Change into the directory `cd codebase/ansible/quick_deploy`
+1. Clone this repository
+    ```bash
+    git clone https://gitlab.rlp.net/top/24s/secplay/codebase.git
+    ```
+2. Change into the directory
+    ```bash
+    cd codebase/ansible/quick_deploy
+    ```
 3. Edit the inventory file `inventory.ini` with your preferences (e.g. the IP address of the target machine)
 4. Edit `group_vars/all.yml` to specify:
     1. which repo should be added
     2. which application should be deployed
     3. on what processor architecture the system is running on
     4. the credentials to your private container registry
-5. Run the playbook `ansible-playbook -i inventory.ini playbook.yml -Kk`
+5. Run the playbook
+    ```bash
+    ansible-playbook -i inventory.ini playbook.yml -Kk
+    ```
 
 > **Note:** The `-K` flag is used to prompt for the sudo password. If you want to run the playbook without the prompt, you must edit the sudoers file on the target machine to allow passwordless sudo for your user.
 
@@ -49,10 +77,20 @@ This playbook installs and configures a Kubernetes cluster with [microk8s](https
 
 ### SSH keys
 
-1. Generate a new ssh key `ssh-keygen -t ed25519`
-> **Note:** If you are using a legacy system that doesn't support the Ed25519 algorithm, use: `ssh-keygen -t rsa -b 4096`
+1. Generate a new ssh key
+    ```bash
+    ssh-keygen -t ed25519
+    ```
+> **Note:** If you are using a legacy system that doesn't support the Ed25519 algorithm, use:
+    ```bash
+    ssh-keygen -t rsa -b 4096
+    ```
 
-2. Copy the public key to the target machine `ssh-copy-id <username>@<target-ip>`. Replace `<username>` with your username and `<target-ip>` with the IP address of the target machine.
+2. Copy the public key to the target machine
+    ```bash
+    ssh-copy-id <username>@<target-ip>
+    ```
+Replace `<username>` with your username and `<target-ip>` with the IP address of the target machine.
 3. Enter the password for the target machine when prompted.
 
 ### Passwordless sudo
