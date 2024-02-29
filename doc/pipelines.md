@@ -37,6 +37,8 @@ deployments:
 The pipeline will get triggered and automatically deploy an `apache` instance into the Kubernetes cluster.
 In case the pipeline executes the **playbook role "helm_deploy"**.
 
+> **Note:** The target and the local gitlab have to exchange their public keys to communicate via ssh successfully. See [Secrets](./gitlab-secrets.md).
+
 ### Repository mirroring into gitlab.ai.it.hs-worms.de
 The initial problem was that the VM refused the ansible ssh connection from the external **gitlab.rlp.net** server.
 Therefore, we mirrored the `codebase` subproject to the internal **gitlab.ai.it.hs-worms** which synchronizes itself with gitlab.rlp.net server and triggers the same pipeline but internally.
