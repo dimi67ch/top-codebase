@@ -1,4 +1,4 @@
-# How to create Helm CHarts
+# How to create Helm Charts
 
 ## Structure
 For creating a Helm chart you always require:
@@ -7,7 +7,7 @@ For creating a Helm chart you always require:
 - a `templates` directory which contains:
     - your **Kubernetes resources**
 
-For example we created a first Helm chart for the first version of our project website. The Stucture looks like this:
+For example we created a first Helm chart for the first version of our project website. The Structure looks like this:
 ```bash
 secplay-website
   |_Chart.yaml

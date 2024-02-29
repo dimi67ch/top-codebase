@@ -45,7 +45,7 @@ Add the following lines of code:
       repo_username: "gitlab+deploy-token-247"
       repo_password: "gldt-G4NVnsZx8yx56MpXRvsC"
   ```
-  > **Note:** `repo_username` and `repo_password` are a gitlab token which expires at some point so you might have to create a new one to access the private package registry. See [here]().
+  > **Note:** `repo_username` and `repo_password` are a gitlab token which expires at some point so you might have to create a new one to access the private package registry. See [here](./gitlab-tokens.md).
 
 - under the section deployments for deploying the service on the cluster
 
@@ -71,7 +71,7 @@ If you want to deploy your service without using Ansible you can go to the comma
   ```bash
   helm repo add "gitlab-abc" "https://gitlab.rlp.net/api/v4/projects/39843/packages/helm/stable" --username=gitlab+deploy-token-247 --password=gldt-G4NVnsZx8yx56MpXRvsC
   ```
-  > **Note:** values of `username` and `password` are a gitlab token which expires at some point so you might have to create a new one to access the private package registry. See [here]().
+  > **Note:** values of `username` and `password` are a gitlab token which expires at some point so you might have to create a new one to access the private package registry. See [here](./gitlab-tokens.md).
 
 - deploy service
 
