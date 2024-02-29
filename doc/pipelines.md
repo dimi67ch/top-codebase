@@ -5,7 +5,7 @@ In this project we use **two** Pipelines:
 - a pipeline in the subproject `microservices` which automatically builds docker images out of Dockerfiles and packages Helm specific files 
 
 ## `Codebase`-Pipeline
-![codebase_pipeline.drawio.svg](uploads/6706c631eadd71d950431494eeda7f67/codebase_pipeline.drawio.svg)
+![codebase_pipeline.drawio.svg](img/codebase-pipeline-diagram.svg)
 
 This pipeline listens if there are any changes in the `codebase/ansible/quick_deploy/group_vars/all.yaml` file.
 Example:
@@ -67,7 +67,7 @@ To connect with the VM from now on, your public Key has to be registered in the 
 This way, the pipeline can connect to the VM without the `-K` flag.
 
 ## Microservices-`Pipeline`
-![microservice-pipeline.drawio.svg](uploads/1f258a6d7ad8592024106eb72266cd49/microservice-pipeline.drawio.svg)
+![microservice-pipeline.drawio.svg](img/microservice-pipeline-diagram.svg)
 
 This pipeline does two things:
 1) **Building Docker images** from newly pushed Dockerfiles. For the pipeline to be successfully triggered and the Dockerfile to be found, you have to place your Dockerfile like the following way `microservices/src/<service-name>/Dockerfile`. The image will be built and uploaded to the **container registry** (on gitlab.rlp.net).
