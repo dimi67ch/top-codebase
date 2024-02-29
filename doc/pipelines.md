@@ -42,7 +42,7 @@ In case the pipeline executes the **playbook role "helm_deploy"**.
 ### Repository mirroring into gitlab.ai.it.hs-worms.de
 The initial problem was that the VM refused the ansible ssh connection from the external **gitlab.rlp.net** server.
 Therefore, we mirrored the `codebase` subproject to the internal **gitlab.ai.it.hs-worms** which synchronizes itself with gitlab.rlp.net server and triggers the same pipeline but internally.
-For the **mirroring** we
+For the **mirroring** we used an access token. See [tokens](./gitlab-tokens.md#local-mirror-of-codebase-repository).
 
 ### SSH-Authentification with Target Server
 Normally, you would execute the ansible playbook like this:
