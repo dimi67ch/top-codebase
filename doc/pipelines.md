@@ -28,7 +28,7 @@ deployments:
      - value: "service.nodePorts.http=32000" # Port
   # APACHE
   - name: "apache"
-    chart_ref: bitnami/apache
+    chart_ref: "bitnami/apache"
     set_values:
      - value: "service.type=LoadBalancer" 
      - value: "service.nodePorts.http=32010" # Port
