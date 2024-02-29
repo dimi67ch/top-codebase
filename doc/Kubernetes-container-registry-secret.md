@@ -1,6 +1,6 @@
 # Kubernetes Container Registry Secret 'gitlab-rlp'
 
-So that Kubernetes is able to **authenticate to the gitlab** container registry to pull docker images and deploy containers, we defined a Kubernetes Secret ressource.\
+So that Kubernetes is able to **authenticate to the gitlab** container registry to pull docker images and deploy containers, we defined a Kubernetes Secret resource.\
 This Secret is applied via our **Ansible** Playbook in a declarative way (a file).
 ## How to create a Secrets file
 Our Secret file `docker_registry_config.yaml` looks like this:
@@ -13,7 +13,7 @@ type: kubernetes.io/dockerconfigjson
 data:
   .dockerconfigjson: eyJhdXRocyI6eyJyZWdpc3RyeS5naXRsYWIucmxwLm5ldC90b3AvMjRzL3NlY3BsYXkvbWljcm9zZXJ2aWNlcyI6eyJ1c2VybmFtZSI6ImdpdGxhYitkZXBsb3ktdG9rZW4tMjQ4IiwicGFzc3dvcmQiOiJnbGR0LUdDMzZjcUxTaE1veVU4OUJQdWRvIiwiYXV0aCI6IloybDBiR0ZpSzJSbGNHeHZlUzEwYjJ0bGJpMHlORGc2WjJ4a2RDMUhRek0yWTNGTVUyaE5iM2xWT0RsQ1VIVmtidz09In19fQ==
 ```
-The `.dockerconfigjson`-data is **base64** encryptet. In plain text it means the following:
+The `.dockerconfigjson`-data is **base64** encrypted. In plain text it means the following:
 ```
 {"auths":{"registry.gitlab.rlp.net/top/24s/secplay/microservices":{"username":"gitlab+deploy-token-248","password":"gldt-GC36cqLShMoyU89BPudo","auth":"Z2l0bGFiK2RlcGxveS10b2tlbi0yNDg6Z2xkdC1HQzM2Y3FMU2hNb3lVODlCUHVkbw=="}}}
 ```

@@ -34,6 +34,10 @@ In the file `codebase/ansible/quick_deploy/group_vars/all.yml`:
 ### You can configure:
   - Your **processor architecture** (for downloading the correct Helm binary).
 
+  ```yaml
+  arch: amd64 # or arm64
+  ```
+
 ### You can list:
   - which **Helm repositories** you want to download.
     - For example, you can download the `bitnami` repository like this:
@@ -45,11 +49,11 @@ In the file `codebase/ansible/quick_deploy/group_vars/all.yml`:
       You can download every Helm chart repo you want by listing its `repo_name` and `repo_url` under the `repositories` section. 
   - which **container images** you want to deploy on your Kubernetes cluster.
     - After downloading the required repos, you can install Helm charts like this:
-    ```yaml
-    deployments:
-      - name: "wordpress"
-        chart_ref: "bitnami/wordpress"
-    ```
+      ```yaml
+      deployments:
+        - name: "wordpress"
+          chart_ref: "bitnami/wordpress"
+      ```
     In this case we deployed **wordpress** from the **bitnami repo** we downloaded before. You can install every Helm chart you want by listing its `name` and `chart_ref` under the `deployments` section.
 
 ## Set attribute on deployments
@@ -88,6 +92,8 @@ If you apply changes on this file, save and push it, a pipeline will be triggere
 
 ## Deploy own Helm Charts
 
+See [chapter "Deploy own services](./deploy-own-services.md).
+
 ## Port rules
 
 ## Execute the Playbook
@@ -102,3 +108,12 @@ To execute only the helm_deploy role to deploy new services:
 ```bash
  ansible all -i inventory.ini -m include_role -a name=helm_deploy -e @group_vars/all.yml
 ```
+
+### Multiple executions of the playbook
+
+- When you execute the playbook multiple times with nothing changed in the `all.yml` file, nothing will change because of Ansible's idempotence.
+- When you execute it with a deployed service not in `all.yml` anymore, Ansible will use Helm to uninstall it.
+- When you execute the playbook with changed a version number of a service, there a two scenarios:
+  - higher version number: Helm will upgrade it
+  - lower version number: nothing will change, because downgrading is not possible
+  > **Note:** Its still possible to deploy the same service with different versions as two separate deployments. 

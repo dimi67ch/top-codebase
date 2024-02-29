@@ -1,6 +1,6 @@
 # Gitlab Package Registry
 
-The Gitlab package registry in the `microservices` project is used to upload every **Helm chart package** into it so **ansible** can use these packages to install the costumized helm charts onto the **kubernetes** cluster.
+The Gitlab package registry in the `microservices` project is used to upload every **Helm chart package** into it so **ansible** can use these packages to install the customized helm charts onto the **kubernetes** cluster.
 ## Upload Helm packages to the registry
 ### Automatically via the pipeline
 See [microservices pipeline](https://gitlab.rlp.net/groups/top/24s/secplay/-/wikis/Pipelines#microservices-pipeline)

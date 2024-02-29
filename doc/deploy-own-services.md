@@ -54,7 +54,7 @@ Add the following lines of code:
     - name: "secplay-website"
       chart_ref: "gitlab-rlp/secplay-website"
   ```
-  > **Note:** `name`is will be the pod name and `cart_ref` is the specfied helm chart
+  > **Note:** `name`is will be the pod name and `cart_ref` is the specified helm chart
   
   If you push the change the [pipeline](./pipelines.md#codebase-pipeline) will automatically execute the playbook.
   Otherwise you can execute the playbook manually with:
