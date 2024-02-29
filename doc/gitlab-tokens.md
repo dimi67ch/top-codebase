@@ -1,10 +1,10 @@
 # GitLab Tokens
 
-Used for accessing the container- and package registry.
+Used for accessing the container and package registry.
 
 In our project, it is used by the ansible playbook, which deploys the Helm charts into the Kubernetes cluster.
 
-In Ansible:
+In **Ansible**:
 ```yaml
 repositories:
   - repo_name: "gitlab-rlp"

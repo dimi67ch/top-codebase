@@ -7,7 +7,7 @@ For creating a Helm chart you always require:
 - a `templates` directory which contains:
     - your **Kubernetes resources**
 
-For example we created a first Helm chart for the first version of our project website. The Structure looks like this:
+For example we created a first Helm chart for the first version of our project website. The **Structure** looks like this:
 ```bash
 secplay-website
   |_Chart.yaml
@@ -32,7 +32,7 @@ version: 1.0.0
 
 ### values.yaml
 This file contains the **values** of the Kubernetes resources of your application. You can outsource them from these files into this to have them more clearer.\
-e.g. our website
+e.g. our website:
 ```yaml
 secplayWebsite:
   image:
@@ -68,7 +68,7 @@ secplayWebsite:
     selector:
         app: secplay-website
   ```
-  > **Note:** You can see that the actual values reference the entries in the **values.yaml** file
+  > **Note:** You can see that the actual values reference the entries in the **values.yaml** file.
 - **secplayweb-dpl.yaml**
   ```yaml
     apiVersion: apps/v1
@@ -114,9 +114,14 @@ secplayWebsite:
                 port:
                   number: 80
   ```
-  > **Note:** This ingress resource allows the website to be reachable from outside the cluster at port 80
+  > **Note:** This ingress resource allows the website to be reachable from outside the cluster at port 80.
 
 ## Package the Chart
+
+Either automatically via the pipeline or manually.\
 See [chapter package registry](./gitlab-package-registry.md).
 
 ## Install the Chart
+
+Either via the playbook or manually.\
+See [chapter "deploy own services"](./deploy-own-services.md#deploy-helm-chart-into-the-kubernetes-cluster).

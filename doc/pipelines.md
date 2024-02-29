@@ -1,14 +1,15 @@
 # Pipelines
 
 In this project we use **two** Pipelines:
-- a pipeline in the subproject `codebase` which deploys your specified Helm charts in the `codebase/ansible/quick_deploy/group_vars/all.yaml` on the Kubernetes Cluster
-- a pipeline in the subproject `microservices` which automatically builds docker images out of Dockerfiles and packages Helm specific files 
+- a pipeline in the subproject `codebase` which deploys your specified Helm charts in the `codebase/ansible/quick_deploy/group_vars/all.yml` on the Kubernetes Cluster.
+- a pipeline in the subproject `microservices` which automatically builds docker images out of Dockerfiles and packages Helm specific files.
 
 ## `Codebase`-Pipeline
 ![codebase_pipeline.drawio.svg](img/codebase-pipeline-diagram.svg)
 
-This pipeline listens if there are any changes in the `codebase/ansible/quick_deploy/group_vars/all.yaml` file.
-Example:
+This pipeline listens if there are any changes in the `codebase/ansible/quick_deploy/group_vars/all.yml` file.\
+
+Example:\
 If you change the file from this:
 ```yaml
 deployments:
@@ -34,11 +35,12 @@ deployments:
      - value: "service.nodePorts.http=32010" # Port
 ```
 The pipeline will get triggered and automatically deploy an `apache` instance into the Kubernetes cluster.
-In case the pipeline executes the **playbook role helm deploy**.
+In case the pipeline executes the **playbook role "helm_deploy"**.
 
 ### Repository mirroring into gitlab.ai.it.hs-worms.de
 The initial problem was that the VM refused the ansible ssh connection from the external **gitlab.rlp.net** server.
 Therefore, we mirrored the `codebase` subproject to the internal **gitlab.ai.it.hs-worms** which synchronizes itself with gitlab.rlp.net server and triggers the same pipeline but internally.
+For the **mirroring** we
 
 ### SSH-Authentification with Target Server
 Normally, you would execute the ansible playbook like this:
