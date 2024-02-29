@@ -1,6 +1,6 @@
 # GitLab Secrets
 
-These GitLab Secrets are used for the CI/CD pipelines and must be set.
+These GitLab Secrets are used for the CI/CD pipelines and must be set in `Settings -> CI/CD -> Variables`.
 
 ## codebase
 
@@ -13,5 +13,7 @@ These GitLab Secrets are used for the CI/CD pipelines and must be set.
   ```sh
   ssh-keygen
   ```
+
+> **Note:** You must copy the public key to the target machine with `ssh-copy-id <username>@<target-ip>`.
 
 - `VM_IPADDRESS`: The IP-Address of the target.
