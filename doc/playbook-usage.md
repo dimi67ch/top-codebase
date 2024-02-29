@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Install Ansible on your local device. You can follow the guide [here](https://docs.ansible.com/ansible/latest/installation_guide/index.html).
+- Install Ansible on your local device. You can follow the guide [here](https://gitlab.rlp.net/top/24s/secplay/codebase/-/blob/main/README.md?ref_type=heads#installation).
 - Copy your public key to targets with:
   ```bash 
   ssh-copy-id <username>@<targetIP>
@@ -63,7 +63,7 @@ deployments:
       - value: "service.nodePorts.http=32000"
       - value: "replicaCount=3"
 ```
-For example, you can set Kubernetes specific attributes like `replicas` or the `exposed ports` by services (like shown above) or others like `service type` and many more.
+For example, you can set Kubernetes specific attributes like `replicas` or the `exposed ports` by services (like shown above) or others like `service type`, `namespaces` and many more.
 
 In this case, we set the `replicaCount`, which corresponds to Kubernetes' `replicas` attribute, to *3*. The designation of Kubernetes attributes can vary across different Helm charts.
 e.g., changing *replicas* in *PhpMyAdmin* Helm chart:
@@ -74,21 +74,21 @@ e.g., changing *replicas* in *PhpMyAdmin* Helm chart:
     - value: "replicas=2" # 'replicas' in phpmyadmin = 'replicaCount' in wordpress
 ```
 
-You can verify these designations in the documentation of the Helm charts, such as for **wordpress** available at [https://artifacthub.io/packages/helm/bitnami/wordpress](https://artifacthub.io/packages/helm/bitnami/wordpress).
+You can verify these designations in the documentation of the Helm charts, such as for **wordpress** available at [artifacthub](https://artifacthub.io/packages/helm/bitnami/wordpress).
 
 Additionally, the **port** exposed by the Wordpress service is configured to **32000**. Therefore, your Wordpress deployment remains accessible at that port.
+
+> Note: The **port range** that our Kubernetes cluster can use is between **30000 and 32767** without using Kubernetes Ingress ressources. If you want to be able to use other port you have to add an [ingress]() configuration to your helm chart.
+
+> Note: Kubernetes service type `ClusterIP` does not expose a port to outside the cluster.
+
 To specify the **Wordpress version** to a specific release, like **6.0.0**, you can include `- value: "image.tag=6.0.0"` in the list of `set_values`. However, it's important to note that the method for changing versions may vary from one Helm chart to another.
 
-If you apply changes on this file, save and push it, a pipeline will be triggered and deploys the changes automatically on the Kubernetes cluster. See [Chapter Pipelines](https://gitlab.rlp.net/groups/top/24s/secplay/-/wikis/Pipelines)
+If you apply changes on this file, save and push it, a pipeline will be triggered and deploys the changes automatically on the Kubernetes cluster. See [chapter Ppipelines](https://gitlab.rlp.net/groups/top/24s/secplay/-/wikis/Pipelines).
 
 ## Deploy own Helm Charts
 
 ## Port rules
-The **port range** that our Kubernetes cluster can use is between **30000 and 32767** without using Kubernetes Ingress ressources.
-To make it easier we chose to set the following port rules:
-- for **own Helm chart deployments** use **30000** to **32000**
-- for **other** Helm char tdeployments use **32001** to **32767**
-- we assign the port numbers in the `codebase/ansible/quick_deploy/group_vars/all.yml` in a **numeric way from up to down beginning on 30000 in ten steps**
 
 ## Execute the Playbook
 
