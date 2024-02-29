@@ -31,7 +31,7 @@ See for [Dockerfiles](./gitlab-container-registry.md#manually) and [packages](./
 
 If your image and Helm chart have succesfully been uploaded you are ready to deploy your service to the cluster.
 
-## via Ansible Playbook
+### via Ansible Playbook
 
 Go to the file `codebase/ansible/quick_deploy/group_vars/all.yaml`.\
 Add the following lines of code:
@@ -63,7 +63,7 @@ Add the following lines of code:
   ansible-playbook -i inventory.ini playbook.yaml
   ```
 
-## Manually
+### Manually
 
 If you want to deploy your service without using Ansible you can go to the command line of the system where your cluster is running and type in:
 
@@ -75,6 +75,6 @@ If you want to deploy your service without using Ansible you can go to the comma
 
 - deploy service
 
-```bash
-helm install "secplay-website" "gitlab-rlp/secplay-website"
-```
+  ```bash
+  helm install "secplay-website" "gitlab-rlp/secplay-website"
+  ```
