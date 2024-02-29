@@ -71,22 +71,6 @@ This way, the pipeline can connect to the VM without the `-K` flag.
 
 This pipeline does two things:
 1) **Building Docker images** from newly pushed Dockerfiles. For the pipeline to be successfully triggered and the Dockerfile to be found, you have to place your Dockerfile like the following way `microservices/src/<service-name>/Dockerfile`. The image will be built and uploaded to the **container registry** (on gitlab.rlp.net).
-2) **Packaging newly pushed Helm charts**. Therefore, if you want to create own Helm charts yourself, you have to push them like this: `microservices/src/*/*-service`. So the directory which contains the charts **must** be named <anything>**-service** e.g. costumer-**service. If this is the case, the pipeline will package the content of this directory like the **Chart.yaml**, **values.yaml** the **templates** directory into a **tgz** file and upload it to the **package registry** (on gitlab.rlp.net). The name of the package will be the same as the name of the directory which was packaged e.g. costumer-service.
+2) **Packaging newly pushed Helm charts**. Therefore, if you want to create own Helm charts yourself, you have to push them like this: `microservices/src/<service-name>/*-service`. So the directory which contains the charts **must** be named <anything>**-service** e.g. costumer-**service. If this is the case, the pipeline will package the content of this directory like the **Chart.yaml**, **values.yaml** the **templates** directory into a **tgz** file and upload it to the **package registry** (on gitlab.rlp.net). The name of the package will be the same as the name of the directory which was packaged e.g. costumer-service.
 
-## Push a new service in this way (example with frontend-service):
-
-``` bash
-microservices
-|_src  # must be this directory
-   |_frontend  # name doesnt matter
-        |_frontend-service  # must be service name with '-service' at the end; this directory gets packaged
-        |     |_Chart.yaml
-        |     |_values.yaml
-        |     |_.helmignore
-        |     |_templates
-        |           |_deployment.yaml
-        |           |_service.yaml
-        |_Dockerfile  # That Dockerfile is built
-        |_ ...
- 
-```
+Due to the pipeline to be successful, you should push your new services like [this](./deploy-own-services.md#push-a-new-service-in-this-way-example-with-frontend-service) in the repository.

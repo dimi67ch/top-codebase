@@ -36,7 +36,7 @@ e.g. our website
 ```yaml
 secplayWebsite:
   image:
-    repository: registry.gitlab.rlp.net/top/24s/secplay/microservices project-homepage_api
+    repository: registry.gitlab.rlp.net/top/24s/secplay/microservices project-homepage_api # image url (container registry) 
     pullPolicy: IfNotPresent
     pullSecret: gitlab-rlp
   ports:
