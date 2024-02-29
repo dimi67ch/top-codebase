@@ -24,6 +24,7 @@ deployments:
   #   chart_ref: "bitnami/wordpress"
   #   set_values:
   #    - value: "ingress.enabled=true"
+  #    - value: "mariadb.primary.persistence.enabled=false"
   #    - value: "service.ports.http=8080" # Port
   #    - value: "image.tag=6.0.0"
   #    - value: "replicaCount=2"
