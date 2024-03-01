@@ -20,14 +20,20 @@ deployments:
   # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY (Port 32001 - 32767)
 
   # WORDPRESS
-  # - name: "wordpress"
-  #   chart_ref: "bitnami/wordpress"
-  #   set_values:
-  #    - value: "ingress.enabled=true"
-  #    - value: "mariadb.primary.persistence.enabled=false"
-  #    - value: "service.ports.http=8080" # Port
-  #    - value: "image.tag=6.0.0"
-  #    - value: "replicaCount=2"
+  - name: "wordpress-6-0-0"
+    chart_ref: "bitnami/wordpress"
+    set_values:
+     - value: "overrideDatabaseSettings=true"
+     - value: "persistence.enabled=false"
+     - value: "image.tag=6.0.0"
+  #  - value: "replicaCount=2"
+
+    # WORDPRESS
+  - name: "wordpress-latest"
+    chart_ref: "bitnami/wordpress"
+    set_values:
+     - value: "overrideDatabaseSettings=true"
+     - value: "persistence.enabled=false"
 
   # POSTGRESQL
   # - name: "postgresql"
@@ -60,6 +66,3 @@ deployments:
   #     - value: "service.nodePorts.http=32040" # Port
     
 arch: amd64
-container_registry_url: registry.gitlab.rlp.net/top/24s/secplay/microservices
-container_registry_username: gitlab+deploy-token-248
-container_registry_password: gldt-GC36cqLShMoyU89BPudo
