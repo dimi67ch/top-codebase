@@ -31,7 +31,7 @@ There are three different ways:
 
 This was our way to go.
 
-1. We created a file `docker_registry_config.yaml`. You can find this file at `codebase/ansible/quick-deploy/roles/microk8s/files/docker_registry_config.yaml`.
+1. We created a file `docker_registry_config.yaml`. You can find this file at `codebase/ansible/roles/microk8s/files/docker_registry_config.yaml`.
 
 2. We copied the file to the target
 ```yaml

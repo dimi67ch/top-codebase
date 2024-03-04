@@ -33,7 +33,7 @@ If your image and Helm chart have succesfully been uploaded you are ready to dep
 
 ### via Ansible Playbook
 
-Go to the file `codebase/ansible/quick_deploy/group_vars/all.yaml`.\
+Go to the file `codebase/ansible/group_vars/all.yaml`.\
 Add the following lines of code:
 
 - under the section repositories for downloading the private repo (package registry)

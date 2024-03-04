@@ -1,13 +1,13 @@
 # Pipelines
 
 In this project we use **two** Pipelines:
-- a pipeline in the subproject `codebase` which deploys your specified Helm charts in the `codebase/ansible/quick_deploy/group_vars/all.yml` on the Kubernetes Cluster.
+- a pipeline in the subproject `codebase` which deploys your specified Helm charts in the `codebase/ansible/group_vars/all.yml` on the Kubernetes Cluster.
 - a pipeline in the subproject `microservices` which automatically builds docker images out of Dockerfiles and packages Helm specific files.
 
 ## `Codebase`-Pipeline
 ![codebase_pipeline.drawio.svg](img/codebase-pipeline-diagram.svg)
 
-This pipeline listens if there are any changes in the `codebase/ansible/quick_deploy/group_vars/all.yml` file.\
+This pipeline listens if there are any changes in the `codebase/ansible/group_vars/all.yml` file.\
 
 Example:\
 If you change the file from this:

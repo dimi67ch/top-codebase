@@ -18,7 +18,7 @@ The Playbook consists of 4 roles:
 
 ## Inventory file
 
-The inventory file is located at `codebase/ansible/quick_deploy/inventory.ini`. There you can list your target host with their IP addresses or domain names and the user of the target.
+The inventory file is located at `codebase/ansible/inventory.ini`. There you can list your target host with their IP addresses or domain names and the user of the target.
 For example:
 ```bash
 [target]
@@ -27,9 +27,9 @@ securityplayground.projekte.it.hs-worms.de ansible_connection=ssh ansible_ssh_us
 
 ## Setting Playbook
 
-You can find the playbook at `codebase/ansible/quick_deploy/playbook.yml`. This main playbook includes the roles, and you can decide which of them you want to be executed. By default, every one of them is run.
+You can find the playbook at `codebase/ansible/playbook.yml`. This main playbook includes the roles, and you can decide which of them you want to be executed. By default, every one of them is run.
 
-In the file `codebase/ansible/quick_deploy/group_vars/all.yml`:
+In the file `codebase/ansible/group_vars/all.yml`:
 
 ### You can configure:
   - Your **processor architecture** (for downloading the correct Helm binary).
