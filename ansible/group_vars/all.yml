@@ -6,26 +6,40 @@ repositories:
     repo_url: "https://gitlab.rlp.net/api/v4/projects/39843/packages/helm/stable"
     repo_username: "gitlab+deploy-token-247"
     repo_password: "gldt-G4NVnsZx8yx56MpXRvsC"
+  - repo_name: "gitlab-rlp-fullstack"
+    repo_url: "https://gitlab.rlp.net/api/v4/projects/40083/packages/helm/stable"
+    repo_username: "ansible"
+    repo_password: "gldt-e6fVARFitCULWyd-29oA"
+  - repo_name: "dapr"
+    repo_url: "https://dapr.github.io/helm-charts/"
 deployments:
+  # DEPLOY DAPR VIA HELM
+  
+  - name: "dapr"
+    chart_ref: "dapr/dapr"
+    release_namespace: "dapr-system"
+    create_namespace: true
+    wait: true
+
   # DEPLOY OWN HELM CHARTS (Port 30000 - 32000)
-  # - name: "order-service"
-  #   chart_ref: "gitlab-rlp/order-service"
-  # - name: "auth-service"
-  #   chart_ref: "gitlab-rlp/auth-service"
-  # - name: "customer-service"
-  #   chart_ref: "gitlab-rlp/customer-service"
+
   - name: "secplay-website"
-    chart_ref: "gitlab-rlp/secplay-website"
+    chart_ref: "gitlab-rlp/secplay-website" # Port = 80
+
+  - name: "webshop"
+    chart_ref: "gitlab-rlp-fullstack/webshop"
+    set_values:
+     - value: "frontend.nodePort=32000" # Port
 
   # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY (Port 32001 - 32767)
 
   # WORDPRESS
-  - name: "wordpress-latest"
-    chart_ref: "bitnami/wordpress"
-    set_values:
-     - value: "overrideDatabaseSettings=true"
-     - value: "persistence.enabled=false"
-     - value: "service.nodePorts.http=32000" # Port
+  # - name: "wordpress-latest"
+  #   chart_ref: "bitnami/wordpress"
+  #   set_values:
+  #    - value: "overrideDatabaseSettings=true"
+  #    - value: "persistence.enabled=false"
+  #    - value: "service.nodePorts.http=32000" # Port
 
   # POSTGRESQL
   # - name: "postgresql"
@@ -56,5 +70,8 @@ deployments:
   #   set_values:
   #     - value: "service.type=LoadBalancer" 
   #     - value: "service.nodePorts.http=32040" # Port
+secrets:
+  - filename: "docker_registry_config.yaml"
+  - filename: "docker_registry_config_fullstack.yaml"
     
 arch: amd64

@@ -40,15 +40,6 @@
     path: ~/.kube/config
     mode: go-r
   when: install_microk8s_result.changed
-
-- name: Copy container registry secrets into target server
-  ansible.builtin.copy:
-    src: docker_registry_config.yaml
-    dest: ~/docker_registry_config.yaml
-
-- name: Apply container registry secret
-  ansible.builtin.shell:
-    cmd: /snap/bin/kubectl apply -f ~/docker_registry_config.yaml
   
 - name: Copy ingress configurations file into target server
   ansible.builtin.copy:
@@ -58,3 +49,14 @@
 - name: Apply http ingress configuration
   ansible.builtin.shell:
     cmd: /snap/bin/kubectl apply -f http-ingress.yaml
+
+- name: Copy Kubernetes secrets to target
+  ansible.builtin.copy:
+    src: "{{ item.filename }}"
+    dest: "~/{{ item.filename }}"
+  loop: "{{ secrets }}"
+
+- name: Apply Kubernetes secrets to target
+  ansible.builtin.shell:
+    cmd: "/snap/bin/kubectl apply -f ~/{{ item.filename }}"
+  loop: "{{ secrets }}"

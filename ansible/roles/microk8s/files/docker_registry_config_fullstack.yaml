@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gitlab-rlp-fullstack
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJyZWdpc3RyeS5naXRsYWIucmxwLm5ldC90b3AvMjRzL3NlY3BsYXkvZnVsbHN0YWNrLXByb2pla3QvZnVsbHN0YWNrcHJvamVrdC1taWNyb3NlcnZpY2VzIjp7InVzZXJuYW1lIjoiYW5zaWJsZSIsInBhc3N3b3JkIjoiZ2xkdC1lNmZWQVJGaXRDVUxXeWQtMjlvQSIsImF1dGgiOiJZVzV6YVdKc1pUcG5iR1IwTFdVMlpsWkJVa1pwZEVOVlRGZDVaQzB5T1c5QiJ9fX0=
