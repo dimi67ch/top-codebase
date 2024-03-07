@@ -3,8 +3,8 @@ stages:
   - deployment
 
 variables:
-  ANSIBLE_INVENTORY: 'ansible/quick_deploy/inventory.ini'
-  ANSIBLE_PLAYBOOK: 'ansible/quick_deploy/playbook.yml'
+  ANSIBLE_INVENTORY: 'ansible/inventory.ini'
+  ANSIBLE_PLAYBOOK: 'ansible/playbook.yml'
 
 lint:
   stage: lint
@@ -51,7 +51,6 @@ deployment:
         ansible target -i inventory.ini -m include_role -a name=helm_deploy -e @group_vars/all.yml
       else
         echo "no changes in "all.yml""
-        ansible-playbook $ANSIBLE_PLAYBOOK --inventory $ANSIBLE_INVENTORY
       fi
     - echo "Deployment step concluded."
   only:
