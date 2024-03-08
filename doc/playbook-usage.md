@@ -96,6 +96,13 @@ See [chapter "Deploy own services](./deploy-own-services.md).
 
 ## Port rules
 
+The **port range** that our Kubernetes cluster can use is between **30000 and 32767** without using Kubernetes Ingress ressources.
+To make it easier we chose to set the following port rules:
+- for **own Helm chart deployments** use **30000** to **32000**
+- for **other** Helm char tdeployments use **32001** to **32767**
+- we assign the port numbers in the `codebase/ansible/group_vars/all.yml` in a **numeric way from up to down beginning on 30000 in ten steps**
+
+
 ## Execute the Playbook
 
 To execute the whole playbook:
