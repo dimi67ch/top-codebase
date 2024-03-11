@@ -3,8 +3,13 @@ kind: Ingress
 metadata:
   name: http-ingress
 spec:
+  tls:
+    - hosts:
+      - securityplayground.projekte.it.hs-worms.de
+      secretName: secplay-ssl
   rules:
-  - http:
+  - host: securityplayground.projekte.it.hs-worms.de
+    http:
       paths:
       - path: /
         pathType: Prefix
