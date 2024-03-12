@@ -87,7 +87,13 @@ deployments:
     chart_ref: "portainer/portainer"
     create_namespace: true
     release_namespace: "portainer"
-    
+  
+  # STARTSPHERE
+  - name: "startsphere"
+    chart_ref: "gitlab-rlp/startsphere"
+    set_values:
+      - value: "service.type=NodePort"
+      - value: "service.nodePort=32070" # Port
 
 secrets:
   - filename: "docker_registry_config.yaml"
