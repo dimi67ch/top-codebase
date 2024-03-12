@@ -77,7 +77,7 @@ deployments:
 
   # JUICE-SHOP
   - name: "juice-shop"
-    chart_ref: "gitlab-rlp/juiceshop" # Portnummer nicht änderbar
+    chart_ref: "gitlab-rlp/juiceshop"
     set_values:
       - value: "service.type=LoadBalancer"
       - value: "service.nodePort=32050" # Port
