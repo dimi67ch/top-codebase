@@ -92,7 +92,7 @@ deployments:
   - name: "startsphere"
     chart_ref: "gitlab-rlp/startsphere"
     set_values:
-      - value: "service.type=NodePort"
+      - value: "service.type=LoadBalancer"
       - value: "service.nodePort=32070" # Port
 
 secrets:
