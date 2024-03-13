@@ -1,0 +1,36 @@
+- name: Ensure curl is installed
+  ansible.builtin.package:
+    name: curl
+    state: present
+  become: true
+
+- name: Get the latest stable version of KubeVirt
+  ansible.builtin.shell: >
+    curl -s https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirt/stable.txt
+  register: kubevirt_version_raw
+  become: false 
+
+- name: Set the KubeVirt version as a fact
+  ansible.builtin.set_fact:
+    kubevirt_version: "kubevirt_version_raw.stdout"
+
+- name: Install KubeVirt Operator
+  ansible.builtin.command:
+    cmd: "microk8s kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/{{ kubevirt_version }}/kubevirt-operator.yaml"
+  become: true
+
+- name: Install KubeVirt Custom Resource (CR)
+  ansible.builtin.command:
+    cmd: "microk8s kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/{{ kubevirt_version }}/kubevirt-cr.yaml"
+  become: true
+
+- name: Verify KubeVirt Installation
+  ansible.builtin.command:
+    cmd: "microk8s kubectl get all -n kubevirt"
+  register: kubevirt_pods
+  become: true
+
+- name: Show KubeVirt Pods
+  ansible.builtin.debug:
+    var: kubevirt_pods.stdout_lines
+

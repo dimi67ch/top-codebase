@@ -7,3 +7,4 @@
     - microk8s
     - helm
     - helm_deploy
+    # - kubevirt
