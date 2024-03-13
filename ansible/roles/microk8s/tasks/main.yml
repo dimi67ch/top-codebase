@@ -40,23 +40,22 @@
     path: ~/.kube/config
     mode: go-r
   when: install_microk8s_result.changed
+
+- name: Install kubernetes python module
+  ansible.builtin.package:
+    name: python3-kubernetes
+    state: present
+  become: true
   
-- name: Copy ingress configurations file into target server
-  ansible.builtin.copy:
-    src: http-ingress.yaml
-    dest: ~/http-ingress.yaml
-
 - name: Apply http ingress configuration
-  ansible.builtin.shell:
-    cmd: /snap/bin/kubectl apply -f http-ingress.yaml
-
-- name: Copy Kubernetes secrets to target
-  ansible.builtin.copy:
-    src: "{{ item.filename }}"
-    dest: "~/{{ item.filename }}"
-  loop: "{{ secrets }}"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'http-ingress.yaml') | from_yaml }}"
+    namespace: default
 
 - name: Apply Kubernetes secrets to target
-  ansible.builtin.shell:
-    cmd: "/snap/bin/kubectl apply -f ~/{{ item.filename }}"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', '{{ item.filename }}') | from_yaml }}"
+    namespace: default
   loop: "{{ secrets }}"

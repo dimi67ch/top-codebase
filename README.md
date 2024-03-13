@@ -64,7 +64,11 @@ sudo apt install ansible
     2. which application should be deployed
     3. on what processor architecture the system is running on
     4. the credentials to your private container registry
-5. Run the playbook
+5. Install/Update kubernetes collection
+    ```bash
+    ansible-galaxy collection install kubernetes.core --force
+    ```
+6. Run the playbook
     ```bash
     ansible-playbook -i inventory.ini playbook.yml -Kk
     ```
