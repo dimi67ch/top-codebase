@@ -8,25 +8,36 @@
   ansible.builtin.shell: >
     curl -s https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirt/stable.txt
   register: kubevirt_version_raw
-  become: false 
 
 - name: Set the KubeVirt version as a fact
   ansible.builtin.set_fact:
-    kubevirt_version: "kubevirt_version_raw.stdout"
+    kubevirt_version: "{{ kubevirt_version_raw.stdout }}"
 
-- name: Install KubeVirt Operator
-  ansible.builtin.command:
-    cmd: "microk8s kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/{{ kubevirt_version }}/kubevirt-operator.yaml"
-  become: true
+- name: Download KubeVirt Operator manifest
+  ansible.builtin.get_url:
+    url: "https://github.com/kubevirt/kubevirt/releases/download/{{ kubevirt_version }}/kubevirt-operator.yaml"
+    dest: ~/kubevirt-operator.yaml
+    mode: 0644
 
-- name: Install KubeVirt Custom Resource (CR)
-  ansible.builtin.command:
-    cmd: "microk8s kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/{{ kubevirt_version }}/kubevirt-cr.yaml"
-  become: true
+- name: Apply KubeVirt Operator manifest
+  kubernetes.core.k8s:
+    state: present
+    src: ~/kubevirt-operator.yaml
+
+- name: Download KubeVirt Custom Resource (CR)
+  ansible.builtin.get_url:
+    url: "https://github.com/kubevirt/kubevirt/releases/download/{{ kubevirt_version }}/kubevirt-cr.yaml"
+    dest: ~/kubevirt-cr.yaml
+    mode: 0644
+
+- name: Apply KubeVirt Custom Resource (CR)
+  kubernetes.core.k8s:
+      state: present
+      src: ~/kubevirt-cr.yaml
 
 - name: Verify KubeVirt Installation
   ansible.builtin.command:
-    cmd: "microk8s kubectl get all -n kubevirt"
+    cmd: "/snap/bin/microk8s kubectl get all -n kubevirt"
   register: kubevirt_pods
   become: true
 
