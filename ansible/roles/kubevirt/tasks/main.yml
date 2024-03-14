@@ -48,4 +48,26 @@
     namespace: kubevirt
   register: kubevirt_pods
 
+- name: Determine the architecture
+  ansible.builtin.set_fact:
+    arch: "{{ ansible_architecture | regex_replace('x86_64', 'amd64') }}"
 
+- name: Set full architecture fact
+  ansible.builtin.set_fact:
+    full_arch: "{{ ansible_system | lower }}-{{ arch }}"
+
+- name: Download virtctl
+  ansible.builtin.get_url:
+    url: "https://github.com/kubevirt/kubevirt/releases/download/{{ kubevirt_version }}/virtctl-{{ kubevirt_version }}-{{ full_arch }}"
+    dest: "/tmp/virtctl"
+    mode: '0755'
+
+- name: Install virtctl
+  ansible.builtin.command:
+    cmd: "install /tmp/virtctl /usr/local/bin/virtctl"
+  become: true
+
+- name: Remove temporary virtctl binary
+  ansible.builtin.file:
+    path: "/tmp/virtctl"
+    state: absent
