@@ -1,5 +1,5 @@
 ---
-usercount: 3
+# DOWNLOAD HELM REPOSITORYS
 repositories:
   - repo_name: "bitnami"
     repo_url: "https://charts.bitnami.com/bitnami"
@@ -17,26 +17,31 @@ repositories:
     repo_url: "https://charts.securecodebox.io/"
   - repo_name: "portainer"
     repo_url: "https://portainer.github.io/k8s/"
+
+# --------------------
+# INSTALL HELM CHARTS
 deployments:
+
   # DEPLOY DAPR VIA HELM
-  
   - name: "dapr"
     chart_ref: "dapr/dapr"
     release_namespace: "dapr-system"
     create_namespace: true
     wait: true
 
-  # DEPLOY OWN HELM CHARTS (Port 30000 - 32000)
-
+# --------------------
+# DEPLOY OWN HELM CHARTS (Port 30000 - 32000)
   - name: "secplay-website"
     chart_ref: "gitlab-rlp/secplay-website" # Port = 80 (ingress)
 
+  # WEBSHOP FROM FULLSTACK PROJECT
   - name: "webshop"
     chart_ref: "gitlab-rlp-fullstack/webshop"
     set_values:
      - value: "frontend.nodePort=32000" # Port
 
-  # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY (Port 32001 - 32767)
+# --------------------
+# DEPLOY HELM CHARTS FROM REMOTE REPOSITORY (Port 32001 - 32767)
 
   # WORDPRESS
   # - name: "wordpress-latest"
@@ -96,8 +101,16 @@ deployments:
       - value: "service.type=LoadBalancer"
       - value: "service.nodePort=32070" # Port
 
+# --------------------
+# SECRET FILES
 secrets:
   - filename: "docker_registry_config.yaml"
   - filename: "docker_registry_config_fullstack.yaml"
-    
+
+# --------------------
+# SYSTEM ARCHITECTURE
 arch: amd64
+
+# --------------------
+# AMOUNT OF USER ACCOUNTS IN THE CLUSTER
+usercount: 3
