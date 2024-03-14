@@ -1,6 +1,25 @@
 ---
 # tasks file for k8s_rbac
 
+- name: Count how many namespaces are in the cluster with the name user(n)
+  kubernetes.core.k8s_info:
+    kind: Namespace
+  register: namespace_info_before
+  when: usercount | int == 0
+
+- name: Set the usercount as a fact
+  set_fact:
+    namespacecount_before: "{{ namespace_info_before.resources | map(attribute=\"metadata.name\") | select(\"match\", \"^user\") | list | length }}"
+  when: usercount | int == 0
+
+- name: Delete all namespaces if usercount is 0
+  kubernetes.core.k8s:
+    state: absent
+    kind: Namespace
+    name: "user{{ item }}"
+  with_sequence: count={{ namespacecount_before }}
+  when: usercount | int == 0
+
 - name: Create kubernetes namespaces
   kubernetes.core.k8s:
     name: "user{{ item }}"
@@ -8,12 +27,14 @@
     kind: Namespace
     state: present
   with_sequence: count={{ usercount }}
+  when: usercount | int != 0
 
 - name: Generate key pair for each user
   community.crypto.openssl_privatekey:
     path: "/tmp/user{{ item }}.key"
     type: "Ed25519"
   with_sequence: count={{ usercount }}
+  when: usercount | int != 0
 
 - name: Generate certificate signing request for each user
   community.crypto.openssl_csr:
@@ -22,6 +43,7 @@
     organization_name: edit
     common_name: "user{{ item }}"
   with_sequence: count={{ usercount }}
+  when: usercount | int != 0
 
 - name: Generate certificate for each user
   community.crypto.x509_certificate:
@@ -32,6 +54,7 @@
     ownca_not_after: "+1d"
     provider: ownca
   with_sequence: count={{ usercount }}
+  when: usercount | int != 0
 
 - name: Create roles for each user
   kubernetes.core.k8s:
@@ -47,6 +70,7 @@
           resources: ["pods", "services", "deployments", "configmaps", "secrets"]
           verbs: ["get", "list", "watch", "create", "update", "delete"]
   with_sequence: count={{ usercount }}
+  when: usercount | int != 0
 
 - name: Create role bindings for each user
   kubernetes.core.k8s:
@@ -66,6 +90,7 @@
         name: "user{{ item }}-role"
         apiGroup: rbac.authorization.k8s.io
   with_sequence: count={{ usercount }}
+  when: usercount | int != 0
 
 - name: Copy user certificates to local machine
   ansible.builtin.fetch:
@@ -73,6 +98,7 @@
     dest: "certs/{{ inventory_hostname }}/user{{ item }}.crt"
     flat: true
   with_sequence: count={{ usercount }}
+  when: usercount | int != 0
 
 - name: Copy user private keys to local machine
   ansible.builtin.fetch:
@@ -80,41 +106,46 @@
     dest: "certs/{{ inventory_hostname }}/user{{ item }}.key"
     flat: true
   with_sequence: count={{ usercount }}
+  when: usercount | int != 0
 
 - name: Copy kubernetes ca certificate to local machine
   ansible.builtin.fetch:
     src: "/var/snap/microk8s/current/certs/ca.crt"
     dest: "certs/{{ inventory_hostname }}/ca.crt"
     flat: true
+  when: usercount | int != 0
 
 - name: Delete files from /tmp
   shell: rm /tmp/user*
+  when: usercount | int != 0
 
 - name: Count how many namespaces are in the cluster with the name user(n)
   kubernetes.core.k8s_info:
     kind: Namespace
   register: namespace_info
+  when: usercount | int != 0
 
 - name: Set the usercount as a fact
   set_fact:
     namespacecount: "{{ namespace_info.resources | map(attribute=\"metadata.name\") | select(\"match\", \"^user\") | list | length }}"
+  when: usercount | int != 0
 
 - name: Check if usercount is lower than actual namespaces exist
   debug:
     msg: "It is lower"
-  when: usercount | int < namespacecount | int
+  when: usercount | int != 0 and usercount | int < namespacecount | int
 
 - pause:
     prompt: "There are more namespaces than users. Do you want to delete any users? (y/n)"
     echo: true
   register: confirm_deletion
-  when: usercount | int < namespacecount | int
+  when: usercount | int != 0 and usercount | int < namespacecount | int
 
 - pause:
     prompt: "Which users do you want to delete? (comma separated list ex. 1,2,3) ({{ namespacecount | int - usercount | int }} users left to delete)"
     echo: true
   register: users_to_delete
-  when: usercount | int < namespacecount | int and confirm_deletion.user_input | lower == "y"
+  when: usercount | int != 0 and usercount | int < namespacecount | int and confirm_deletion.user_input | lower == "y"
   until: users_to_delete.user_input.split(',') | length == namespacecount | int - usercount | int
 
 - name: Delete the specified users
@@ -123,4 +154,4 @@
     kind: Namespace
     name: "user{{ item }}"
   loop: "{{ users_to_delete.user_input.split(',') }}"
-  when: usercount | int < namespacecount | int and confirm_deletion.user_input | lower == "y"
+  when: usercount | int != 0 and usercount | int < namespacecount | int and confirm_deletion.user_input | lower == "y"
