@@ -89,3 +89,38 @@
 
 - name: Delete files from /tmp
   shell: rm /tmp/user*
+
+- name: Count how many namespaces are in the cluster with the name user(n)
+  kubernetes.core.k8s_info:
+    kind: Namespace
+  register: namespace_info
+
+- name: Set the usercount as a fact
+  set_fact:
+    namespacecount: "{{ namespace_info.resources | map(attribute=\"metadata.name\") | select(\"match\", \"^user\") | list | length }}"
+
+- name: Check if usercount is lower than actual namespaces exist
+  debug:
+    msg: "It is lower"
+  when: usercount | int < namespacecount | int
+
+- pause:
+    prompt: "There are more namespaces than users. Do you want to delete any users? (y/n)"
+    echo: true
+  register: confirm_deletion
+  when: usercount | int < namespacecount | int
+
+- pause:
+    prompt: "Which users do you want to delete? (comma separated list ex. 1,2,3) ({{ namespacecount | int - usercount | int }} users left to delete)"
+    echo: true
+  register: users_to_delete
+  when: usercount | int < namespacecount | int and confirm_deletion.user_input | lower == "y"
+  until: users_to_delete.user_input.split(',') | length == namespacecount | int - usercount | int
+
+- name: Delete the specified users
+  kubernetes.core.k8s:
+    state: absent
+    kind: Namespace
+    name: "user{{ item }}"
+  loop: "{{ users_to_delete.user_input.split(',') }}"
+  when: usercount | int < namespacecount | int and confirm_deletion.user_input | lower == "y"
