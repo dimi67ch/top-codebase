@@ -1,4 +1,5 @@
 ---
+usercount: 3
 repositories:
   - repo_name: "bitnami"
     repo_url: "https://charts.bitnami.com/bitnami"

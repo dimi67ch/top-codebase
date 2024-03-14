@@ -8,3 +8,4 @@
     - helm
     - helm_deploy
     - kubevirt
+    - k8s_rbac

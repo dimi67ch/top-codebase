@@ -31,7 +31,7 @@
   when: install_microk8s_result.changed
 
 - name: Enable storage and ingress module in microk8s
-  ansible.builtin.shell: /snap/bin/microk8s enable hostpath-storage ingress
+  ansible.builtin.shell: /snap/bin/microk8s enable hostpath-storage ingress rbac
   become: true
   when: install_microk8s_result.changed
 
