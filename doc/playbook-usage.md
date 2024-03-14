@@ -10,11 +10,12 @@
 
 ## Roles
 
-The Playbook consists of 4 roles:
+The Playbook consists of 5 roles:
 - **snapd**: Installs and enables snapd, required for installing microk8s later.
 - **microk8s**: Installs a single-node microk8s cluster and its CLI tool kubectl.
 - **helm**: Downloads the helm binary, extracts it, moves it into the target directory, and installs python3-yaml.
 - **helm-deploy**: Downloads requested helm repositories and deploys images via helm into the Kubernetes cluster.
+- **kubevirt**: Installs the KubeVirt extension and virtctl for Kubernetes, which allows you to run virtual machines on microk8s.
 
 ## Inventory file
 
