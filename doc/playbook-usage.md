@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Install Ansible on your local device. You can follow the guide [here](https://gitlab.rlp.net/top/24s/secplay/codebase/-/blob/main/README.md?ref_type=heads#installation).
+- Install Ansible on your local device. You can follow the guide [here](../README.md).
 - Copy your public key to targets with:
   ```bash 
   ssh-copy-id <username>@<targetIP>
@@ -20,7 +20,7 @@ The Playbook consists of 4 roles:
 
 The inventory file is located at `codebase/ansible/inventory.ini`. There you can list your target host with their IP addresses or domain names and the user of the target.
 For example:
-```bash
+```ini
 [target]
 securityplayground.projekte.it.hs-worms.de ansible_connection=ssh ansible_ssh_user=securityplayground
 ```
@@ -32,6 +32,12 @@ You can find the playbook at `codebase/ansible/playbook.yml`. This main playbook
 In the file `codebase/ansible/group_vars/all.yml`:
 
 ### You can configure:
+  - You can set the amount of **users accounts** you want to access your Kubernetes cluster (in their own isolated **namespace**)
+
+  ```yaml
+  usercount: 3
+  ```
+
   - Your **processor architecture** (for downloading the correct Helm binary).
 
   ```yaml

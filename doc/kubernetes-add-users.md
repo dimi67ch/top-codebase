@@ -1,63 +1,52 @@
-# Kubernetes Add Users
+# Give users access to your Kubernetes cluster
 
-This document describes how to configure local kubeconfig files for users to access a Kubernetes cluster.
+In this chapter we explain how you can give users from outside secure access to your Kubernetes cluster.
 
-## Prerequisites
+## Playbook
 
-### Install kubectl
+When you run the Ansible playbook, you can determine how many user accounts you want to create in the `codebase/ansible/group_vars/all.yml` file:
 
-- Windows
-    ```
-    choco install kubernetes-cli
-    ```
-- MacOS
-    ```
-    brew install kubernetes-cli
-    ```
-- Linux
-  - Ubuntu
-    ```
-    sudo snap install kubectl --classic
-    ```
-  - Debian
-    ```
-    sudo apt install kubernetes-client
-    ```
-  - Fedora
-    ```
-    sudo dnf install kubernetes-client
-    ```
+```yaml
+usercount: 3
+```
 
-## Steps
+in this case we want to create `3` user accounts.\
+The playbooks's `k8s_rbac` role will initially **create a namespace for each user**.
 
-1. Create credentials for the cluster.
+> The namespace will be named "user\<n>" 
 
-    ```
-    kubectl config set-credentials <username> --client-key=<username>.key --client-certificate=<username>.crt --embed-certs=true
-    ```
+With Kubernetes' Role Based Access Control **(RBAC)** we defined that every user has **only access to their own namespace**. The playbook implements this with **Roles** and **RoleBindings**.
 
-    Replace `<username>` with the appropriate values.
+Due to **authentication** reasons the playbook creates a **key pair** for every user, such as a certificate signing request (**csr**). The Kubernetes CA will afterwards sign the certificates of the users.
 
-2. Set the cluster configuration.
+> The key will be named "user\<n>.key"
 
-    ```
-    kubectl config set-cluster <cluster-name> --server=<server-url>:16443 --certificate-authority=<ca.crt> --embed-certs
-    ```
+> The certificate will be named "user\<n>.crt"
 
-    Replace `<cluster-name>`, `<server-url>`, and `<ca.crt>` with the appropriate values.
+> **Note:** The certificate is valid for 24 hours!
 
-3. Set the context.
+To protect the keys and certificates of each user, we **copy** them to the host machine (which executes the playbook) and eventually **delete** them from Kubernetes host machine.
 
-    ```
-    kubectl config set-context <context-name> --cluster=<cluster-name> --user=<username>
-    ```
+### Change the number of user accounts
 
-    Replace `<context-name>` and `<cluster-name>` with the appropriate values.
+If you change `usercount` to a **bigger** number:
+- the additional user accounts will be added (from user1 to user\<n>).
 
-4. Set the context as default.
+If you change `usercount` to a **lower** number:
+- the playbook will ask you which of the user accounts you want to remove
+- **for example**: if you change the `usercount` from **5** to **3** and you want to remove user account **user1** and **user4** you type in:
+```bash
+1,4
+```
+and the playbook will delete **user1** and **user4** (and their **namespaces**).
 
-    ```
-    kubectl config set current-context <context-name>
-    ```
+If you change `usercount` to **0**:
+- The playbook deletes every user and their namespace.
 
-    Replace `<context-name>` with the appropriate value.
+## How users can access their namespace
+
+See [chapter kubernetes-kubectl-for-users](./kubernetes-kubectl-for-users.md).
+
+## How admins can access the cluster
+
+To access the cluster as an administrator, you have to connect to the Kubernetes host machine via **ssh**.
