@@ -52,6 +52,7 @@ deployment:
       else
         echo "no changes in "all.yml""
         echo "executing whole playbook..."
+        cd ansible
         ansible-playbook -i inventory.ini playbook.yml
       fi
     - echo "Deployment step concluded."
