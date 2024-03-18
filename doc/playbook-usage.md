@@ -126,20 +126,13 @@ To make it easier we chose to set the following port rules:
 ## Execute the Playbook
 
 To execute the whole playbook:
-```bash
-ansible-playbook -i inventory.ini playbook.yml
-```
-or
+
 ```bash
 ./run_playbook.sh
 ```
 
 To execute only the helm_deploy role to deploy new services:
 
-```bash
- ansible all -i inventory.ini -m include_role -a name=helm_deploy -e @group_vars/all.yml
-```
-or
 ```bash
 ./run_helm_deploy.sh
 ```
@@ -151,4 +144,6 @@ or
 - When you execute the playbook with changed a version number of a service, there a two scenarios:
   - higher version number: Helm will upgrade it (if possible)
   - lower version number: Helm will downgrade the deployment (if possible, e.g. in wordpress its not possible)
-  > **Note:** Its still possible to deploy the same service with different versions as two separate deployments. 
+  > **Note:** Its still possible to deploy the same service with different versions as two separate deployments.
+
+> **Caution:** If Helm ist not updating any of your newly edited configuration (like new port number etc.) by using the playbook, try do it manually by first uninstalling the Helm installation with `helm uninstall \<name>` and then executing the playbook again. This should deploy the service with your latest required settings.

@@ -93,6 +93,8 @@ deployments:
     chart_ref: "portainer/portainer"
     create_namespace: true
     release_namespace: "portainer"
+    set_values:
+      - value: "service.httpNodePort=32060" # Port
   
   # STARTSPHERE
   - name: "startsphere"
@@ -120,4 +122,4 @@ arch: amd64
 
 # --------------------
 # AMOUNT OF USER ACCOUNTS IN THE CLUSTER
-usercount: 3
+usercount: 0

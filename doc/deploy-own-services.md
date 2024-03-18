@@ -33,7 +33,8 @@ If your image and Helm chart have succesfully been uploaded you are ready to dep
 
 ### via Ansible Playbook
 
-Go to the file `codebase/ansible/group_vars/all.yaml`.\
+Go to the file `codebase/ansible/group_vars/all.yaml`.
+
 Add the following lines of code:
 
 - under the section repositories for downloading the private repo (package registry)
@@ -59,10 +60,6 @@ Add the following lines of code:
   If you push the change, the [pipeline](./pipelines.md#codebase-pipeline) will automatically execute the playbook.
   Otherwise you can execute the playbook manually with:
 
-  ```bash
-  ansible-playbook -i inventory.ini playbook.yaml
-  ```
-  or
   ```bash
   ./run_playbook.sh
   ```

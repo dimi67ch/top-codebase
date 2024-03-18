@@ -52,7 +52,7 @@ This was our way to go.
        definition: "{{ lookup('file', '{{ item.filename }}') | from_yaml }}"
        namespace: default
      loop: "{{ files }}"
-```
+   ```
 
 ### File via CLI
 
@@ -60,9 +60,9 @@ This was our way to go.
 
 2. Apply the Secret
 
-```bash
-kubectl apply -f <secrets_filename>
-```
+   ```bash
+   kubectl apply -f <secrets_filename>
+   ```
 
 ### Command via CLI (imperative)
 
