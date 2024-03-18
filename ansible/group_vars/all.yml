@@ -101,6 +101,12 @@ deployments:
       - value: "service.type=LoadBalancer"
       - value: "service.nodePort=32070" # Port
 
+  # KIOPTRIX
+  - name: "kioptrix"
+    chart_ref: "gitlab-rlp/kioptrix"
+    set_values:
+      - value: "service.type=LoadBalancer"
+
 # --------------------
 # FILES
 files:
