@@ -102,10 +102,11 @@ deployments:
       - value: "service.nodePort=32070" # Port
 
 # --------------------
-# SECRET FILES
-secrets:
+# FILES
+files:
   - filename: "docker_registry_config.yaml"
   - filename: "docker_registry_config_fullstack.yaml"
+  - filename: "http-ingress.yaml"
 
 # --------------------
 # SYSTEM ARCHITECTURE

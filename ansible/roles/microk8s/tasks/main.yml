@@ -46,16 +46,10 @@
     name: python3-kubernetes
     state: present
   become: true
-  
-- name: Apply http ingress configuration
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('file', 'http-ingress.yaml') | from_yaml }}"
-    namespace: default
 
-- name: Apply Kubernetes secrets to target
+- name: Apply Kubernetes files to target
   kubernetes.core.k8s:
     state: present
     definition: "{{ lookup('file', '{{ item.filename }}') | from_yaml }}"
     namespace: default
-  loop: "{{ secrets }}"
+  loop: "{{ files }}"

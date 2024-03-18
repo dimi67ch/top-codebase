@@ -4,7 +4,7 @@ Used for accessing the container and package registry.
 
 In our project, it is used by the ansible playbook, which deploys the Helm charts into the Kubernetes cluster.
 
-In **Ansible**:
+In `codebase/ansible/group_vars/all.yml`:
 ```yaml
 repositories:
   - repo_name: "gitlab-rlp"

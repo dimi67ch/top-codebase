@@ -42,8 +42,8 @@ Add the following lines of code:
   repositories:
     - repo_name: "gitlab-rlp"
       repo_url: "https://gitlab.rlp.net/api/v4/projects/39843/packages/helm/stable"
-      repo_username: "gitlab+deploy-token-247"
-      repo_password: "gldt-G4NVnsZx8yx56MpXRvsC"
+      repo_username: "gitlab+deploy-token-250"
+      repo_password: "gldt-cfzzvDFRHBx56MpXRvsC"
   ```
   > **Note:** `repo_username` and `repo_password` are a gitlab token which expires at some point so you might have to create a new one to access the private package registry. See [here](./gitlab-tokens.md).
 
@@ -54,22 +54,26 @@ Add the following lines of code:
     - name: "secplay-website"
       chart_ref: "gitlab-rlp/secplay-website"
   ```
-  > **Note:** `name`is will be the pod name and `cart_ref` is the specified helm chart
+  > **Note:** `name` is will be the name of the helm installation and `cart_ref` is the specified helm chart.
   
-  If you push the change the [pipeline](./pipelines.md#codebase-pipeline) will automatically execute the playbook.
+  If you push the change, the [pipeline](./pipelines.md#codebase-pipeline) will automatically execute the playbook.
   Otherwise you can execute the playbook manually with:
 
   ```bash
   ansible-playbook -i inventory.ini playbook.yaml
   ```
+  or
+  ```bash
+  ./run_playbook.sh
+  ```
 
 ### Manually
 
-If you want to deploy your service without using Ansible you can go to the command line of the system where your cluster is running and type in:
+If you want to deploy your service without using Ansible you can go to the command line of the system where your cluster is running and type in following commands:
 
 - add repository
   ```bash
-  helm repo add "gitlab-abc" "https://gitlab.rlp.net/api/v4/projects/39843/packages/helm/stable" --username=gitlab+deploy-token-247 --password=gldt-G4NVnsZx8yx56MpXRvsC
+  helm repo add "gitlab-abc" "https://gitlab.rlp.net/api/v4/projects/39843/packages/helm/stable" --username=gitlab+deploy-token-250 --password=gldt-cfzzvDFRHBx56MpXRvsC
   ```
   > **Note:** values of `username` and `password` are a gitlab token which expires at some point so you might have to create a new one to access the private package registry. See [here](./gitlab-tokens.md).
 

@@ -1,6 +1,7 @@
 # Kubernetes Container Registry Secret 'gitlab-rlp'
 
-So that Kubernetes is able to **authenticate to the gitlab** container registry to pull docker images and deploy containers, we defined a Kubernetes Secret resource.\
+So that Kubernetes is able to **authenticate to the gitlab** container registry to pull docker images and deploy containers, we defined a Kubernetes Secret resource.
+
 ## How to create a Secrets file
 Our Secret file `docker_registry_config.yaml` looks like this:
 ```yaml
@@ -33,19 +34,24 @@ This was our way to go.
 
 1. We created a file `docker_registry_config.yaml`. You can find this file at `codebase/ansible/roles/microk8s/files/docker_registry_config.yaml`.
 
-2. We copied the file to the target
-```yaml
-- name: Copy container registry secrets into target server
-  ansible.builtin.copy:
-    src: docker_registry_config.yaml
-    dest: ~/docker_registry_config.yaml
-```
+> **In general:** All files that will be applied to the cluster are located in `codebase/ansible/roles/microk8s/files/`
+
+2. List the secret in `codebase/ansible/group_vars/all.yml` in the `files` section:
+
+   ```yaml
+   # FILES
+   files:
+     - filename: "docker_registry_config.yaml"
+   ```
 
 3. We applied the Secret
-```yaml
-- name: Apply container registry secret
-  ansible.builtin.shell:
-    cmd: /snap/bin/kubectl apply -f ~/docker_registry_config.yaml
+   ```yaml
+   - name: Apply Kubernetes files to target
+     kubernetes.core.k8s:
+       state: present
+       definition: "{{ lookup('file', '{{ item.filename }}') | from_yaml }}"
+       namespace: default
+     loop: "{{ files }}"
 ```
 
 ### File via CLI

@@ -4,7 +4,7 @@ In this chapter we explain how you can give users from outside secure access to 
 
 ## Playbook
 
-When you run the Ansible playbook, you can determine how many user accounts you want to create in the `codebase/ansible/group_vars/all.yml` file:
+Before you run the Ansible playbook, you can determine how many user accounts you want to create in the `codebase/ansible/group_vars/all.yml` file:
 
 ```yaml
 usercount: 3
@@ -17,15 +17,15 @@ The playbooks's `k8s_rbac` role will initially **create a namespace for each use
 
 With Kubernetes' Role Based Access Control **(RBAC)** we defined that every user has **only access to their own namespace**. The playbook implements this with **Roles** and **RoleBindings**.
 
-Due to **authentication** reasons the playbook creates a **key pair** for every user, such as a certificate signing request (**csr**). The Kubernetes CA will afterwards sign the certificates of the users.
+Due to **authentication** reasons the playbook creates a **key pair** for every user, such as a certificate signing request (**CSR**). The Kubernetes CA will afterwards sign the certificates of the users.
 
 > The key will be named "user\<n>.key"
 
 > The certificate will be named "user\<n>.crt"
 
-> **Note:** The certificate is valid for 24 hours!
+> **Note:** The certificate is valid for 2 weeks!
 
-To protect the keys and certificates of each user, we **copy** them to the host machine (which executes the playbook) and eventually **delete** them from Kubernetes host machine.
+To protect the keys and certificates of each user, we **copy** them to the host machine (which executes the playbook) and eventually **delete** them from the Kubernetes host machine.
 
 ### Change the number of user accounts
 
@@ -45,7 +45,7 @@ If you change `usercount` to **0**:
 
 ## How users can access their namespace
 
-See [chapter kubernetes-kubectl-for-users](./kubernetes-kubectl-for-users.md).
+See [chapter "kubernetes-kubectl-for-users"](./kubernetes-kubectl-for-users.md).
 
 ## How admins can access the cluster
 

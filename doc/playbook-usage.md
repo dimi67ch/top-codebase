@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Install Ansible on your local device. You can follow the guide [here](../README.md).
-- Copy your public key to targets with:
+- Copy your public key to target(s) with:
   ```bash 
   ssh-copy-id <username>@<targetIP>
   ```
@@ -15,6 +15,7 @@ The Playbook consists of 5 roles:
 - **microk8s**: Installs a single-node microk8s cluster and its CLI tool kubectl.
 - **helm**: Downloads the helm binary, extracts it, moves it into the target directory, and installs python3-yaml.
 - **helm-deploy**: Downloads requested helm repositories and deploys images via helm into the Kubernetes cluster.
+- **k8s_rbac**: Set up namespace and credentials for every user such as permissions. Allows also the addition and deletion of users.
 - **kubevirt**: Installs the KubeVirt extension and virtctl for Kubernetes, which allows you to run virtual machines on microk8s.
 
 ## Inventory file
@@ -28,12 +29,12 @@ securityplayground.projekte.it.hs-worms.de ansible_connection=ssh ansible_ssh_us
 
 ## Setting Playbook
 
-You can find the playbook at `codebase/ansible/playbook.yml`. This main playbook includes the roles, and you can decide which of them you want to be executed. By default, every one of them is run.
+You can find the playbook at `codebase/ansible/playbook.yml`. This main playbook includes the roles, by default, every one of them is run.
 
 In the file `codebase/ansible/group_vars/all.yml`:
 
 ### You can configure:
-  - You can set the amount of **users accounts** you want to access your Kubernetes cluster (in their own isolated **namespace**)
+  - You can set the amount of **users accounts** you want to access your Kubernetes cluster (in their own isolated **namespace**). See more [here](./kubernetes-add-users.md).
 
   ```yaml
   usercount: 3
@@ -47,6 +48,7 @@ In the file `codebase/ansible/group_vars/all.yml`:
 
 ### You can list:
   - which **Helm repositories** you want to download.
+
     - For example, you can download the `bitnami` repository like this:
       ```yaml
       repositories:
@@ -54,6 +56,7 @@ In the file `codebase/ansible/group_vars/all.yml`:
           repo_url: "https://charts.bitnami.com/bitnami"
       ```
       You can download every Helm chart repo you want by listing its `repo_name` and `repo_url` under the `repositories` section. 
+
   - which **container images** you want to deploy on your Kubernetes cluster.
     - After downloading the required repos, you can install Helm charts like this:
       ```yaml
@@ -63,9 +66,19 @@ In the file `codebase/ansible/group_vars/all.yml`:
       ```
     In this case we deployed **wordpress** from the **bitnami repo** we downloaded before. You can install every Helm chart you want by listing its `name` and `chart_ref` under the `deployments` section.
 
+  - which additional **files** you want to apply to the Kubernetes cluster
+    ```yaml
+    files:
+    - filename: "docker_registry_config.yaml"
+    - filename: "docker_registry_config_fullstack.yaml"
+    - filename: "http-ingress.yaml"
+    ```
+    That files have to be located in `codebase/ansible/roles/microk8s/files/` and automatically will be applied in a loop.
+   
+
 ## Set attribute on deployments
-You can set attributes of your helm chart deployments in the playbook by overriding the existing ones.
-For that, you can use the `set_values:` key and list your wished attributes in key:value style:
+You can set attributes of your Helm chart deployments in the playbook by overriding the existing ones.
+For that, you can use the `set_values:` key and list your wished attributes in **key=value** style:
 ```yaml
 deployments:
   - name: "wordpress"
@@ -77,7 +90,7 @@ deployments:
 For example, you can set Kubernetes specific attributes like `replicas` or the `exposed ports` by services (like shown above) or others like `service type`, `namespaces` and many more.
 
 In this case, we set the `replicaCount`, which corresponds to Kubernetes' `replicas` attribute, to *3*. The designation of Kubernetes attributes can vary across different Helm charts.
-e.g., changing *replicas* in *PhpMyAdmin* Helm chart:
+e.g., changing **replicas in PhpMyAdmin** Helm chart:
 ```yaml
   - name: "phpmyadmin"
     chart_ref: bitnami/phpmyadmin
@@ -89,13 +102,13 @@ You can verify these designations in the documentation of the Helm charts, such 
 
 Additionally, the **port** exposed by the Wordpress service is configured to **32000**. Therefore, your Wordpress deployment remains accessible at that port.
 
-> Note: The **port range** that our Kubernetes cluster can use is between **30000 and 32767** without using Kubernetes Ingress ressources. If you want to be able to use other port you have to add an [ingress]() configuration to your helm chart.
+> Note: The **port range** that our Kubernetes cluster can use is between **30000 and 32767**.
 
 > Note: Kubernetes service type `ClusterIP` does not expose a port to outside the cluster.
 
 To specify the **Wordpress version** to a specific release, like **6.0.0**, you can include `- value: "image.tag=6.0.0"` in the list of `set_values`. However, it's important to note that the method for changing versions may vary from one Helm chart to another.
 
-If you apply changes on this file, save and push it, a pipeline will be triggered and deploys the changes automatically on the Kubernetes cluster. See [chapter Ppipelines](https://gitlab.rlp.net/groups/top/24s/secplay/-/wikis/Pipelines).
+If you apply changes on this file, save and push it, a pipeline will be triggered and deploys the changes automatically on the Kubernetes cluster. See [chapter Pipelines](./pipelines.md).
 
 ## Deploy own Helm Charts
 
@@ -103,7 +116,7 @@ See [chapter "Deploy own services](./deploy-own-services.md).
 
 ## Port rules
 
-The **port range** that our Kubernetes cluster can use is between **30000 and 32767** without using Kubernetes Ingress ressources.
+The **port range** that our Kubernetes cluster can use is between **30000 and 32767**.
 To make it easier we chose to set the following port rules:
 - for **own Helm chart deployments** use **30000** to **32000**
 - for **other** Helm char tdeployments use **32001** to **32767**
@@ -114,7 +127,11 @@ To make it easier we chose to set the following port rules:
 
 To execute the whole playbook:
 ```bash
- ansible-playbook -i inventory.ini playbook.yml
+ansible-playbook -i inventory.ini playbook.yml
+```
+or
+```bash
+./run_playbook.sh
 ```
 
 To execute only the helm_deploy role to deploy new services:
@@ -122,12 +139,16 @@ To execute only the helm_deploy role to deploy new services:
 ```bash
  ansible all -i inventory.ini -m include_role -a name=helm_deploy -e @group_vars/all.yml
 ```
+or
+```bash
+./run_helm_deploy.sh
+```
 
 ### Multiple executions of the playbook
 
 - When you execute the playbook multiple times with nothing changed in the `all.yml` file, nothing will change because of Ansible's idempotence.
 - When you execute it with a deployed service not in `all.yml` anymore, Ansible will use Helm to uninstall it.
 - When you execute the playbook with changed a version number of a service, there a two scenarios:
-  - higher version number: Helm will upgrade it
-  - lower version number: nothing will change, because downgrading is not possible
+  - higher version number: Helm will upgrade it (if possible)
+  - lower version number: Helm will downgrade the deployment (if possible, e.g. in wordpress its not possible)
   > **Note:** Its still possible to deploy the same service with different versions as two separate deployments. 

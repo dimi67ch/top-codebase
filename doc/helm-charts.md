@@ -15,7 +15,6 @@ secplay-website
   |_templates
     |_secplayweb-svc.yaml  # Kubernetes Service
     |_secplayweb-dpl.yaml  # Kubernetes Deployment
-    |_secplayweb-ingress.yaml  # Kubernetes Ingress
 ```
 
 ### Chart.yaml
@@ -96,25 +95,6 @@ secplayWebsite:
                 - name: secplay-website
                 containerPort: {{ .Values.secplayWebsite.ports.containerPort }}
   ```
-- **secplayweb-ingress.yaml**
-  ```yaml
-    apiVersion: networking.k8s.io/v1
-    kind: Ingress
-    metadata:
-      name: http-ingress
-    spec:
-      rules:
-      - http:
-          paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: secplay-website
-                port:
-                  number: 80
-  ```
-  > **Note:** This ingress resource allows the website to be reachable from outside the cluster at port 80.
 
 ## Package the Chart
 

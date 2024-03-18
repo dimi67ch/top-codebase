@@ -7,7 +7,7 @@ In this project we use **two** Pipelines:
 ## `Codebase`-Pipeline
 ![codebase_pipeline.drawio.svg](img/codebase-pipeline-diagram.svg)
 
-This pipeline listens if there are any changes in the `codebase/ansible/group_vars/all.yml` file.\
+This pipeline listens if there are any changes in the `codebase/ansible/group_vars/all.yml` file.
 
 Example:\
 If you change the file from this:
@@ -47,7 +47,7 @@ For the **mirroring** we used an access token. See [tokens](./gitlab-tokens.md#l
 ### SSH-Authentification with Target Server
 Normally, you would execute the ansible playbook like this:
 ```bash
- ansible-playbook -i inventory.ini playbook.yaml -K
+ansible-playbook -i inventory.ini playbook.yaml -K
 ```
 The `-K` is the **ansible_become_password**, basically the sudo password, which is required to execute the playbook tasks.
 We turned the password off the following way:
@@ -74,7 +74,10 @@ This way, the pipeline can connect to the VM without the `-K` flag.
 ![microservice-pipeline.drawio.svg](img/microservice-pipeline-diagram.svg)
 
 This pipeline does two things:
-1) **Building Docker images** from newly pushed Dockerfiles. For the pipeline to be successfully triggered and the Dockerfile to be found, you have to place your Dockerfile like the following way `microservices/src/<service-name>/Dockerfile`. The image will be built and uploaded to the **container registry** (on gitlab.rlp.net).
-2) **Packaging newly pushed Helm charts**. Therefore, if you want to create own Helm charts yourself, you have to push them like this: `microservices/src/<service-name>/*-service`. So the directory which contains the charts **must** be named <anything>**-service** e.g. costumer-**service. If this is the case, the pipeline will package the content of this directory like the **Chart.yaml**, **values.yaml** the **templates** directory into a **tgz** file and upload it to the **package registry** (on gitlab.rlp.net). The name of the package will be the same as the name of the directory which was packaged e.g. costumer-service.
+
+1. **Building Docker images** from newly pushed Dockerfiles. For the pipeline to be successfully triggered and the Dockerfile to be found, you have to place your Dockerfile like the following way `microservices/src/<service-name>/Dockerfile`. The image will be built and uploaded to the **container registry** (on gitlab.rlp.net).
+
+2. **Packaging newly pushed Helm charts**. Therefore, if you want to create own Helm charts yourself, you have to push them like this: `microservices/src/<service-name>/*-service`.
+So the directory which contains the charts **must** be named \<anything>**-service** e.g. costumer-**service**. If this is the case, the pipeline will package the content of this directory like the **Chart.yaml**, **values.yaml** the **templates** directory into a **tgz** file and upload it to the **package registry** (on gitlab.rlp.net). The name of the package will be the same as the name of the directory which was packaged e.g. costumer-service.
 
 Due to the pipeline to be successful, you should push your new services like [this](./deploy-own-services.md#push-a-new-service-in-this-way-example-with-frontend-service) in the repository.
