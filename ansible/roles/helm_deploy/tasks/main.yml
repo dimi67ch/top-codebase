@@ -16,7 +16,7 @@
     repo_username: "{{ item.repo_username if item.repo_password is defined else omit }}"
     repo_password: "{{ item.repo_password if item.repo_username is defined else omit }}"
     validate_certs: "{{ item.validate_certs | default(true) }}"
-  loop: "{{ repositories }}"
+  loop: "{{ repositories | default([], true) }}"
 
 - name: Get list of installed Helm releases
   command:
@@ -61,8 +61,8 @@
     set_values: "{{ item.set_values | default(omit) }}"
     skip_crds: "{{ item.skip_crds | default(false) }}"
     timeout: "{{ item.timeout | default('5m0s') }}"
-    update_repo_cache: "{{ item.update_repo_cache | default(false) }}"
+    update_repo_cache: "{{ item.update_repo_cache | default(true) }}" # update helm repos
     validate_certs: "{{ item.validate_certs | default(true) }}"
     values_files: "{{ item.values_files | default(omit) }}"
     wait: "{{ item.wait | default(false) }}"
-  loop: "{{ deployments }}"
+  loop: "{{ deployments | default([], true) }}"

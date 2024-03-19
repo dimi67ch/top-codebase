@@ -52,4 +52,5 @@
     state: present
     definition: "{{ lookup('file', '{{ item.filename }}') | from_yaml }}"
     namespace: default
-  loop: "{{ files }}"
+  loop: "{{ files | default([], true) }}"
+
