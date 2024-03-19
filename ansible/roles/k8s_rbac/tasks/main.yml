@@ -66,9 +66,33 @@
         name: "user{{ item }}-role"
         namespace: "user{{ item }}"
       rules:
-        - apiGroups: [""]
-          resources: ["pods", "services", "deployments", "configmaps", "secrets"]
-          verbs: ["get", "list", "watch", "create", "update", "delete"]
+        - apiGroups:
+          - ""
+          - "apps"
+          - "autoscaling"
+          - "batch"
+          resources: 
+          - "pods"
+          - "services"
+          - "deployments"
+          - "configmaps"
+          - "secrets"
+          - "replicasets"
+          - "horizontalpodautoscalers"
+          - "cronjobs"
+          - "replicationcontrollers"
+          - "statefulsets"
+          - "daemonsets"
+          - "jobs"
+          - "persistantvolume"
+          - "persistantvolumeclaim"
+          verbs:
+          - "get"
+          - "list"
+          - "watch"
+          - "create"
+          - "update"
+          - "delete"
   with_sequence: count={{ usercount }}
   when: usercount | int != 0
 
