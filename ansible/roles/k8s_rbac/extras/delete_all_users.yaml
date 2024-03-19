@@ -1,0 +1,21 @@
+---
+# playbook for deleting all user namespaces on the Kubernetes cluster
+- name: Deletion of all user namespaces
+  hosts: all
+  tasks:
+
+  - name: Count how many namespaces are in the cluster with the name user(n)
+    kubernetes.core.k8s_info:
+      kind: Namespace
+    register: namespace_info_before
+
+  - name: Count user namespaces
+    ansible.builtin.set_fact:
+      namespacecount_before: "{{ namespace_info_before.resources | map(attribute=\"metadata.name\") | select(\"match\", \"^user\") | list | length }}"
+
+  - name: Delete all namespaces
+    kubernetes.core.k8s:
+      state: absent
+      kind: Namespace
+      name: "user{{ item }}"
+    with_sequence: count={{ namespacecount_before }}

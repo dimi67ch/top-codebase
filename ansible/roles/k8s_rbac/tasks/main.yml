@@ -7,7 +7,7 @@
   register: namespace_info_before
   when: usercount | int == 0
 
-- name: Set the usercount as a fact
+- name: Count user namespaces
   ansible.builtin.set_fact:
     namespacecount_before: "{{ namespace_info_before.resources | map(attribute=\"metadata.name\") | select(\"match\", \"^user\") | list | length }}"
   when: usercount | int == 0
