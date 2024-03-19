@@ -17,6 +17,8 @@ repositories:
     repo_url: "https://charts.securecodebox.io/"
   - repo_name: "portainer"
     repo_url: "https://portainer.github.io/k8s/"
+  - repo_name: "prometheus-community"
+    repo_url: "https://prometheus-community.github.io/helm-charts"
 
 # --------------------
 # INSTALL HELM CHARTS
@@ -35,10 +37,10 @@ deployments:
     chart_ref: "gitlab-rlp/secplay-website" # Port = 80 (ingress)
 
   # WEBSHOP FROM FULLSTACK PROJECT
-  - name: "webshop"
-    chart_ref: "gitlab-rlp-fullstack/webshop"
-    set_values:
-     - value: "frontend.nodePort=32000" # Port
+  # - name: "webshop"
+  #   chart_ref: "gitlab-rlp-fullstack/webshop"
+  #   set_values:
+  #    - value: "frontend.nodePort=32000" # Port
 
 # --------------------
 # DEPLOY HELM CHARTS FROM REMOTE REPOSITORY (Port 32001 - 32767)
@@ -108,6 +110,10 @@ deployments:
   #   chart_ref: "gitlab-rlp/ubuntu"
   #   set_values:
   #     - value: "service.type=LoadBalancer"
+
+  # PROMETHEUS
+  - name: "prometheus"
+    chart_ref: "prometheus-community/kube-prometheus-stack"
 
 # --------------------
 # FILES
