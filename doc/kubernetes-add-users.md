@@ -27,7 +27,7 @@ Due to **authentication** reasons the playbook creates a **key pair** for every 
 
 To protect the keys and certificates of each user, we **copy** them to the host machine (which executes the playbook) and eventually **delete** them from the Kubernetes host machine.
 
-### Change the number of user accounts
+### Change amount of user accounts
 
 If you change `usercount` to a **bigger** number:
 - the additional user accounts will be added (from user1 to user\<n>).
@@ -42,6 +42,11 @@ and the playbook will delete **user1** and **user4** (and their **namespaces**).
 
 If you change `usercount` to **0**:
 - The playbook deletes every user and their namespace.
+
+An alternative way to **delete all user namespaces** is to execute the script `delete_all_users.sh`
+```bash
+./delete_all_users.sh
+```
 
 ## How users can access their namespace
 

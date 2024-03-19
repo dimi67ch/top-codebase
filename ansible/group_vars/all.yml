@@ -104,10 +104,10 @@ deployments:
       - value: "service.nodePort=32070" # Port
 
   # KIOPTRIX
-  - name: "ubuntu"
-    chart_ref: "gitlab-rlp/ubuntu"
-    set_values:
-      - value: "service.type=LoadBalancer"
+  # - name: "ubuntu"
+  #   chart_ref: "gitlab-rlp/ubuntu"
+  #   set_values:
+  #     - value: "service.type=LoadBalancer"
 
 # --------------------
 # FILES
