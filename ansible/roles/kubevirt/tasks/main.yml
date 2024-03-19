@@ -71,3 +71,42 @@
   ansible.builtin.file:
     path: "/tmp/virtctl"
     state: absent
+
+- name: Get the latest stable version of CDI
+  ansible.builtin.shell:
+    cmd: curl -s -w "%{redirect_url}" https://github.com/kubevirt/containerized-data-importer/releases/latest | xargs basename
+  register: cdi_version_raw
+
+- name: Set the CDI version as a fact
+  ansible.builtin.set_fact:
+    cdi_version: "{{ cdi_version_raw.stdout | trim }}"
+
+- name: Download CDI Operator YAML
+  ansible.builtin.get_url:
+    url: "https://github.com/kubevirt/containerized-data-importer/releases/download/{{ cdi_version }}/cdi-operator.yaml"
+    dest: "/tmp/cdi-operator.yaml"
+
+- name: Install CDI Operator
+  kubernetes.core.k8s:
+    state: present
+    src: "/tmp/cdi-operator.yaml"
+
+- name: Download CDI Custom Resource (CR) YAML
+  ansible.builtin.get_url:
+    url: "https://github.com/kubevirt/containerized-data-importer/releases/download/{{ cdi_version }}/cdi-cr.yaml"
+    dest: "/tmp/cdi-cr.yaml"
+
+- name: Install CDI Custom Resource (CR)
+  kubernetes.core.k8s:
+    state: present
+    src: "/tmp/cdi-cr.yaml"
+
+- name: Remove temporary CDI Operator YAML
+  ansible.builtin.file:
+    state: absent
+    path: "/tmp/cdi-operator.yaml"
+
+- name: Remove temporary CDI CR YAML
+  ansible.builtin.file:
+    state: absent
+    path: "/tmp/cdi-cr.yaml"
