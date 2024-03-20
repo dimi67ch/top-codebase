@@ -1,6 +1,6 @@
 # Give users access to your Kubernetes cluster
 
-In this chapter we explain how you can give users from outside secure access to your Kubernetes cluster.
+In this chapter we explain how you can give users from outside secure access to your Kubernetes cluster. Therefore you can use the [playbook](./kubernetes-add-users.md#playbook) or the [scripts](./kubernetes-add-users.md#scripts) that you can find at `codebase/scripts/`.
 
 ## Playbook
 
@@ -43,7 +43,24 @@ and the playbook will delete **user1** and **user4** (and their **namespaces**).
 If you change `usercount` to **0**:
 - The playbook deletes every user and their namespace.
 
-An alternative way to **delete all user namespaces** is to execute the script `delete_all_users.sh`
+## Scripts
+
+You can find the scripts at `codebase/scripts/`.
+
+### Create *n* users
+
+```bash
+./create_users.sh
+```
+
+### Delete *m* users
+
+```bash
+./delete_users.sh
+```
+
+### Delete all users
+
 ```bash
 ./delete_all_users.sh
 ```

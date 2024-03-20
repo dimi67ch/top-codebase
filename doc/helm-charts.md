@@ -1,6 +1,9 @@
 # How to create Helm Charts
 
+A Tutorial how to create Helm charts.
+
 ## Structure
+
 For creating a Helm chart you always require:
 - a `Chart.yaml`
 - a `values.yaml`
@@ -18,6 +21,7 @@ secplay-website
 ```
 
 ### Chart.yaml
+
 This file contains the **metadata** of the Helm chart\
 e.g. our website:
 ```yaml
@@ -30,8 +34,10 @@ version: 1.0.0
 ```
 
 ### values.yaml
+
 This file contains the **values** of the Kubernetes resources of your application. You can outsource them from these files into this to have them more clearer.\
 e.g. our website:
+
 ```yaml
 secplayWebsite:
   image:
@@ -68,7 +74,9 @@ secplayWebsite:
         app: secplay-website
   ```
   > **Note:** You can see that the actual values reference the entries in the **values.yaml** file.
+
 - **secplayweb-dpl.yaml**
+
   ```yaml
     apiVersion: apps/v1
     kind: Deployment

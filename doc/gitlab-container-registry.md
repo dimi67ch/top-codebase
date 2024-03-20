@@ -1,10 +1,17 @@
 # Gitlab Container Registry
 
 The Gitlab container registry (e.g. in the `microservices` project) is used to upload every **Docker image** into it so **Kubernetes** can use these images to **pull and deploy** the customized docker images onto the kubernetes cluster.
+
 ## Upload Docker images to the registry
+
+You can upload them either [automatically via the pipeline](./gitlab-container-registry.md#automatically-via-the-pipeline) or [manually](./gitlab-container-registry.md#manually).
+
 ### Automatically via the pipeline
+
 See [microservices pipeline](./pipelines.md#microservices-pipeline).
+
 ### Manually
+
 1. Login in the container registry
    ```bash
    docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"

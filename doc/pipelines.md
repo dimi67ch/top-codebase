@@ -5,12 +5,14 @@ In this project we use **two** Pipelines:
 - a pipeline in the subproject `microservices` which automatically builds docker images out of Dockerfiles and packages Helm specific files.
 
 ## `Codebase`-Pipeline
+
 ![codebase_pipeline.drawio.svg](img/codebase-pipeline-diagram.svg)
 
 This pipeline listens if there are any changes in the `codebase/ansible/group_vars/all.yml` file.
 
 Example:\
 If you change the file from this:
+
 ```yaml
 deployments:
   # WORDPRESS
@@ -20,6 +22,7 @@ deployments:
      - value: "service.nodePorts.http=32000" # Port
 ```
 to this:
+
 ```yaml
 deployments:
   # WORDPRESS
@@ -34,43 +37,54 @@ deployments:
      - value: "service.type=LoadBalancer" 
      - value: "service.nodePorts.http=32010" # Port
 ```
+
 The pipeline will get triggered and automatically deploy an `apache` instance into the Kubernetes cluster.
 In case the pipeline executes the **playbook role "helm_deploy"**.
 
 > **Note:** The target and the local gitlab have to exchange their public keys to communicate via ssh successfully. See [Secrets](./gitlab-secrets.md).
 
 ### Repository mirroring into gitlab.ai.it.hs-worms.de
+
 The initial problem was that the VM refused the ansible ssh connection from the external **gitlab.rlp.net** server.
 Therefore, we mirrored the `codebase` subproject to the internal **gitlab.ai.it.hs-worms** which synchronizes itself with gitlab.rlp.net server and triggers the same pipeline but internally.
 For the **mirroring** we used an access token. See [tokens](./gitlab-tokens.md#local-mirror-of-codebase-repository).
 
 ### SSH-Authentification with Target Server
 Normally, you would execute the ansible playbook like this:
+
 ```bash
 ansible-playbook -i inventory.ini playbook.yaml -K
 ```
+
 The `-K` is the **ansible_become_password**, basically the sudo password, which is required to execute the playbook tasks.
 We turned the password off the following way:
+
 ```bash
 sudo visudo
 ```
+
 ```bash
 %sudo   ALL=(ALL:ALL) NOPASSWD: ALL
 ```
+
 Also, we changed the file `/etc/ssh/sshd_config` the following:
+
 ```bash
 PasswordAuthentication no
 ChallengeResponseAuthentication no
 UsePAM no
 ```
+
 ```bash
 systemctl reload sshd
 ```
+
 So we turned off the sudo password and the ssh password authentification.
 To connect with the VM from now on, your public Key has to be registered in the VMs `~/.ssh/authorized_keys` file.
 This way, the pipeline can connect to the VM without the `-K` flag.
 
 ## Microservices-`Pipeline`
+
 ![microservice-pipeline.drawio.svg](img/microservice-pipeline-diagram.svg)
 
 This pipeline does two things:

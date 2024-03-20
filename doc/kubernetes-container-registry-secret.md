@@ -3,6 +3,7 @@
 So that Kubernetes is able to **authenticate to the gitlab** container registry to pull docker images and deploy containers, we defined a Kubernetes Secret resource.
 
 ## How to create a Secrets file
+
 Our Secret file `docker_registry_config.yaml` looks like this:
 ```yaml
 apiVersion: v1
@@ -24,9 +25,9 @@ We used this [base64 encoder/decoder](https://www.base64decode.org/).
 ## How to apply this Secret
 
 There are three different ways:
-1. via **Ansible**
-2. applying **file** via CLI
-3. **command** via CLI
+1. via [**Ansible**](./kubernetes-container-registry-secret.md#ansible)
+2. [applying **file** via CLI](./kubernetes-container-registry-secret.md#file-via-cli)
+3. [**command** via CLI](./kubernetes-container-registry-secret.md#command-via-cli-imperative)
 
 ### Ansible
 

@@ -1,8 +1,9 @@
 # Deploy your own services
 
+A Tutorial to deploy your custom created Helm charts.
+
 ## Create a Helm Chart
-The first step is to create a Helm chart for your service you want to deploy to the Kubernetes cluster.\
-See [chapter Helm charts](./helm-charts.md).
+The first step is to create a Helm chart for your service you want to deploy to the Kubernetes cluster like in [chapter "Helm charts"](./helm-charts.md).
 
 ## Add to Repository
 Then you should add your folder to the repository in `microservices/src`.

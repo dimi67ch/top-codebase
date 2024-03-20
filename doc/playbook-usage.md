@@ -4,6 +4,7 @@
 
 - Install Ansible on your local device. You can follow the guide [here](../README.md).
 - Copy your public key to target(s) with:
+
   ```bash 
   ssh-copy-id <username>@<targetIP>
   ```
@@ -22,6 +23,7 @@ The Playbook consists of 5 roles:
 
 The inventory file is located at `codebase/ansible/inventory.ini`. There you can list your target host with their IP addresses or domain names and the user of the target.
 For example:
+
 ```ini
 [target]
 securityplayground.projekte.it.hs-worms.de ansible_connection=ssh ansible_ssh_user=securityplayground
@@ -34,6 +36,7 @@ You can find the playbook at `codebase/ansible/playbook.yml`. This main playbook
 In the file `codebase/ansible/group_vars/all.yml`:
 
 ### You can configure:
+
   - You can set the amount of **users accounts** you want to access your Kubernetes cluster (in their own isolated **namespace**). See more [here](./kubernetes-add-users.md).
 
   ```yaml
@@ -47,9 +50,11 @@ In the file `codebase/ansible/group_vars/all.yml`:
   ```
 
 ### You can list:
+
   - which **Helm repositories** you want to download.
 
     - For example, you can download the `bitnami` repository like this:
+
       ```yaml
       repositories:
         - repo_name: "bitnami"
@@ -59,26 +64,32 @@ In the file `codebase/ansible/group_vars/all.yml`:
 
   - which **container images** you want to deploy on your Kubernetes cluster.
     - After downloading the required repos, you can install Helm charts like this:
+
       ```yaml
       deployments:
         - name: "wordpress"
           chart_ref: "bitnami/wordpress"
       ```
+
     In this case we deployed **wordpress** from the **bitnami repo** we downloaded before. You can install every Helm chart you want by listing its `name` and `chart_ref` under the `deployments` section.
 
   - which additional **files** you want to apply to the Kubernetes cluster
+
     ```yaml
     files:
     - filename: "docker_registry_config.yaml"
     - filename: "docker_registry_config_fullstack.yaml"
     - filename: "http-ingress.yaml"
     ```
+
     That files have to be located in `codebase/ansible/roles/microk8s/files/` and automatically will be applied in a loop.
    
 
 ## Set attribute on deployments
+
 You can set attributes of your Helm chart deployments in the playbook by overriding the existing ones.
 For that, you can use the `set_values:` key and list your wished attributes in **key=value** style:
+
 ```yaml
 deployments:
   - name: "wordpress"
@@ -87,10 +98,12 @@ deployments:
       - value: "service.nodePorts.http=32000"
       - value: "replicaCount=3"
 ```
+
 For example, you can set Kubernetes specific attributes like `replicas` or the `exposed ports` by services (like shown above) or others like `service type`, `namespaces` and many more.
 
 In this case, we set the `replicaCount`, which corresponds to Kubernetes' `replicas` attribute, to *3*. The designation of Kubernetes attributes can vary across different Helm charts.
 e.g., changing **replicas in PhpMyAdmin** Helm chart:
+
 ```yaml
   - name: "phpmyadmin"
     chart_ref: bitnami/phpmyadmin
@@ -124,6 +137,8 @@ To make it easier we chose to set the following port rules:
 
 
 ## Execute the Playbook
+
+You can use scripts that are in `codebase/scripts/`.
 
 To execute the whole playbook:
 
