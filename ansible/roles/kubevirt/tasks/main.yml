@@ -31,7 +31,7 @@
   kubernetes.core.k8s:
     state: present
     src: "/tmp/kubevirt-cr.yaml"
-  
+
 - name: Remove temporary KubeVirt Operator YAML
   ansible.builtin.file:
     state: absent
@@ -41,7 +41,7 @@
   ansible.builtin.file:
     state: absent
     path: "/tmp/kubevirt-cr.yaml"
-    
+
 - name: Verify KubeVirt Installation
   kubernetes.core.k8s_info:
     kind: Pod
@@ -60,7 +60,7 @@
   ansible.builtin.get_url:
     url: "https://github.com/kubevirt/kubevirt/releases/download/{{ kubevirt_version }}/virtctl-{{ kubevirt_version }}-{{ full_arch }}"
     dest: "/tmp/virtctl"
-    mode: '0755'
+    mode: "0755"
 
 - name: Install virtctl
   ansible.builtin.command:

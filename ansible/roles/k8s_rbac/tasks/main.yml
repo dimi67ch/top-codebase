@@ -9,7 +9,7 @@
 
 - name: Count user namespaces
   ansible.builtin.set_fact:
-    namespacecount_before: "{{ namespace_info_before.resources | map(attribute=\"metadata.name\") | select(\"match\", \"^user\") | list | length }}"
+    namespacecount_before: '{{ namespace_info_before.resources | map(attribute="metadata.name") | select("match", "^user") | list | length }}'
   when: usercount | int == 0
 
 - name: Delete all namespaces if usercount is 0
@@ -67,32 +67,32 @@
         namespace: "user{{ item }}"
       rules:
         - apiGroups:
-          - ""
-          - "apps"
-          - "autoscaling"
-          - "batch"
-          resources: 
-          - "pods"
-          - "services"
-          - "deployments"
-          - "configmaps"
-          - "secrets"
-          - "replicasets"
-          - "horizontalpodautoscalers"
-          - "cronjobs"
-          - "replicationcontrollers"
-          - "statefulsets"
-          - "daemonsets"
-          - "jobs"
-          - "persistantvolume"
-          - "persistantvolumeclaim"
+            - ""
+            - "apps"
+            - "autoscaling"
+            - "batch"
+          resources:
+            - "pods"
+            - "services"
+            - "deployments"
+            - "configmaps"
+            - "secrets"
+            - "replicasets"
+            - "horizontalpodautoscalers"
+            - "cronjobs"
+            - "replicationcontrollers"
+            - "statefulsets"
+            - "daemonsets"
+            - "jobs"
+            - "persistantvolume"
+            - "persistantvolumeclaim"
           verbs:
-          - "get"
-          - "list"
-          - "watch"
-          - "create"
-          - "update"
-          - "delete"
+            - "get"
+            - "list"
+            - "watch"
+            - "create"
+            - "update"
+            - "delete"
   with_sequence: count={{ usercount }}
   when: usercount | int != 0
 
@@ -151,7 +151,7 @@
 
 - name: Set the usercount as a fact
   set_fact:
-    namespacecount: "{{ namespace_info.resources | map(attribute=\"metadata.name\") | select(\"match\", \"^user\") | list | length }}"
+    namespacecount: '{{ namespace_info.resources | map(attribute="metadata.name") | select("match", "^user") | list | length }}'
   when: usercount | int != 0
 
 - name: Check if usercount is lower than actual namespaces exist

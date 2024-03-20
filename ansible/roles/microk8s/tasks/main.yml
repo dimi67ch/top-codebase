@@ -18,8 +18,7 @@
   register: add_to_microk8s_group_result
 
 - name: Reset ssh connection to allow user changes to affect ansible user
-  ansible.builtin.meta:
-    reset_connection
+  ansible.builtin.meta: reset_connection
   when: add_to_microk8s_group_result.changed
 
 - name: Wait for microk8s to be ready (up to 10 minutes)
@@ -27,7 +26,7 @@
   when: install_microk8s_result.changed
 
 - name: Configure kubectl for user
-  ansible.builtin.shell: '/snap/bin/microk8s kubectl config view --raw > ~/.kube/config'
+  ansible.builtin.shell: "/snap/bin/microk8s kubectl config view --raw > ~/.kube/config"
   when: install_microk8s_result.changed
 
 - name: Enable storage and ingress module in microk8s
