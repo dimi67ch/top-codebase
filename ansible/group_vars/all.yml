@@ -104,11 +104,11 @@ deployments:
       - value: "service.type=LoadBalancer"
       - value: "service.nodePort=32070" # Port
 
-  # KIOPTRIX
-  # - name: "ubuntu"
-  #   chart_ref: "gitlab-rlp/ubuntu"
-  #   set_values:
-  #     - value: "service.type=LoadBalancer"
+  # UBUNTU
+  - name: "ubuntu"
+    chart_ref: "gitlab-rlp/ubuntu"
+    set_values:
+      - value: "service.type=LoadBalancer"
 
   # PROMETHEUS
   - name: "prometheus"
@@ -127,4 +127,4 @@ arch: amd64
 
 # --------------------
 # AMOUNT OF USER ACCOUNTS IN THE CLUSTER
-usercount: 3
+# usercount: 3

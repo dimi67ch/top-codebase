@@ -164,6 +164,7 @@
     echo: true
   register: confirm_deletion
   when: usercount | int != 0 and usercount | int < namespacecount | int
+  until: confirm_deletion.user_input | lower == "n" or confirm_deletion.user_input | lower == "y"
 
 - pause:
     prompt: "Which users do you want to delete? (comma separated list ex. 1,2,3) ({{ namespacecount | int - usercount | int }} users left to delete)"
@@ -178,4 +179,4 @@
     kind: Namespace
     name: "user{{ item }}"
   loop: "{{ users_to_delete.user_input.split(',') }}"
-  when: usercount | int != 0 and usercount | int < namespacecount | int and confirm_deletion.user_input | lower == "y"
+  when: confirm_deletion.user_input | lower == "y" and usercount | int != 0 and usercount | int < namespacecount | int

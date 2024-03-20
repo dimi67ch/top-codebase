@@ -1,0 +1,38 @@
+---
+# Tasks file for deletion of users
+
+- name: Deletion of users
+  hosts: all
+  tasks: 
+  
+  - name: List namespaces
+    kubernetes.core.k8s_info:
+      kind: Namespace
+    register: namespace_info
+
+  - name: Count namespaces
+    set_fact:
+      namespacecount: '{{ namespace_info.resources | map(attribute="metadata.name") | select("match", "^user") | list | length }}'
+
+  - pause:
+      prompt: "There a currently {{ namespacecount }} user namespaces in the cluster. Do you want to delete any users? (y/n)"
+      echo: true
+    register: confirm_deletion
+    until: confirm_deletion.user_input | lower == "n" or confirm_deletion.user_input | lower == "y"
+  
+  - pause:
+      prompt: "Which users do you want to delete? (comma separated list ex. 1,2,3)"
+    register: users_to_delete
+    when: confirm_deletion.user_input | lower == "y"
+    until: users_to_delete.user_input.split(',') | length <= namespacecount | int
+
+  - name: Delete the specified users
+    kubernetes.core.k8s:
+      state: absent
+      kind: Namespace
+      name: "user{{ item }}"
+    loop: "{{ users_to_delete.user_input.split(',') }}"
+    when: confirm_deletion.user_input | lower == "y" and users_to_delete.user_input.split(',') | length <= namespacecount | int
+
+  
+    

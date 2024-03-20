@@ -1,0 +1,138 @@
+---
+# tasks file for the creation of users and their namespaces
+
+- name: Creation of Users for kubernetes
+  hosts: all
+  tasks:
+
+  - pause:
+      prompt: "How many users do you want to have?"
+      echo: true
+    register: user_amount_input
+
+  - name: Convert user input to integer
+    set_fact:
+      user_amount: "{{ user_amount_input.user_input | int }}"
+
+  - name: Create kubernetes namespaces
+    kubernetes.core.k8s:
+      name: "user{{ item }}"
+      api_version: v1
+      kind: Namespace
+      state: present
+    with_sequence: count={{ user_amount }}
+    when: user_amount | int > 0
+
+  - name: Generate key pair for each user
+    community.crypto.openssl_privatekey:
+      path: "/tmp/user{{ item }}.key"
+      type: "Ed25519"
+    with_sequence: count={{ user_amount }}
+    when: user_amount | int > 0
+
+  - name: Generate certificate signing request for each user
+    community.crypto.openssl_csr:
+      path: "/tmp/user{{ item }}.csr"
+      privatekey_path: "/tmp/user{{ item }}.key"
+      organization_name: edit
+      common_name: "user{{ item }}"
+    with_sequence: count={{ user_amount }}
+    when: user_amount | int > 0
+
+  - name: Generate certificate for each user
+    community.crypto.x509_certificate:
+      path: "/tmp/user{{ item }}.crt"
+      csr_path: "/tmp/user{{ item }}.csr"
+      ownca_path: "/var/snap/microk8s/current/certs/ca.crt"
+      ownca_privatekey_path: "/var/snap/microk8s/current/certs/ca.key"
+      ownca_not_after: "+2w"
+      provider: ownca
+    with_sequence: count={{ user_amount }}
+    when: user_amount | int > 0
+
+  - name: Create roles for each user
+    kubernetes.core.k8s:
+      state: present
+      definition:
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: Role
+        metadata:
+          name: "user{{ item }}-role"
+          namespace: "user{{ item }}"
+        rules:
+          - apiGroups:
+              - ""
+              - "apps"
+              - "autoscaling"
+              - "batch"
+            resources:
+              - "pods"
+              - "services"
+              - "deployments"
+              - "configmaps"
+              - "secrets"
+              - "replicasets"
+              - "horizontalpodautoscalers"
+              - "cronjobs"
+              - "replicationcontrollers"
+              - "statefulsets"
+              - "daemonsets"
+              - "jobs"
+              - "persistantvolume"
+              - "persistantvolumeclaim"
+            verbs:
+              - "get"
+              - "list"
+              - "watch"
+              - "create"
+              - "update"
+              - "delete"
+    with_sequence: count={{ user_amount }}
+    when: user_amount | int > 0
+
+  - name: Create role bindings for each user
+    kubernetes.core.k8s:
+      state: present
+      definition:
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: RoleBinding
+        metadata:
+          name: "user{{ item }}-rolebinding"
+          namespace: "user{{ item }}"
+        subjects:
+          - kind: User
+            name: "user{{ item }}"
+            apiGroup: rbac.authorization.k8s.io
+        roleRef:
+          kind: Role
+          name: "user{{ item }}-role"
+          apiGroup: rbac.authorization.k8s.io
+    with_sequence: count={{ user_amount }}
+    when: user_amount | int > 0
+
+  - name: Copy user certificates to local machine
+    ansible.builtin.fetch:
+      src: "/tmp/user{{ item }}.crt"
+      dest: "../../../certs/{{ inventory_hostname }}/user{{ item }}.crt"
+      flat: true
+    with_sequence: count={{ user_amount }}
+    when: user_amount | int > 0
+
+  - name: Copy user private keys to local machine
+    ansible.builtin.fetch:
+      src: "/tmp/user{{ item }}.key"
+      dest: "../../../certs/{{ inventory_hostname }}/user{{ item }}.key"
+      flat: true
+    with_sequence: count={{ user_amount }}
+    when: user_amount | int > 0
+
+  - name: Copy kubernetes ca certificate to local machine
+    ansible.builtin.fetch:
+      src: "/var/snap/microk8s/current/certs/ca.crt"
+      dest: "../../../certs/{{ inventory_hostname }}/ca.crt"
+      flat: true
+    when: user_amount | int > 0
+
+  - name: Delete files from /tmp
+    shell: rm /tmp/user*
+    when: user_amount | int > 0
