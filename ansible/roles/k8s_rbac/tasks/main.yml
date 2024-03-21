@@ -86,6 +86,7 @@
             - "jobs"
             - "persistantvolume"
             - "persistantvolumeclaim"
+            - "serviceaccounts"
           verbs:
             - "get"
             - "list"
