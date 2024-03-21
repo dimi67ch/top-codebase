@@ -61,7 +61,7 @@
     set_values: "{{ item.set_values | default(omit) }}"
     skip_crds: "{{ item.skip_crds | default(false) }}"
     timeout: "{{ item.timeout | default('5m0s') }}"
-    update_repo_cache: "{{ item.update_repo_cache | default(true) }}" # update helm repos
+    update_repo_cache: "{{ item.update_repo_cache | default(false) }}" # update helm repos
     validate_certs: "{{ item.validate_certs | default(true) }}"
     values_files: "{{ item.values_files | default(omit) }}"
     wait: "{{ item.wait | default(false) }}"
