@@ -3,9 +3,9 @@
   hosts: all
 
   roles:
-    - snapd
-    - microk8s
-    - helm
-    - helm_deploy
-    - kubevirt
+    # - snapd
+    # - microk8s
+    # - helm
+    #- helm_deploy
+    #- kubevirt
     - k8s_rbac

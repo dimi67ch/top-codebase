@@ -127,4 +127,4 @@ arch: amd64
 
 # --------------------
 # AMOUNT OF USER ACCOUNTS IN THE CLUSTER
-usercount: 0
+usercount: 2
