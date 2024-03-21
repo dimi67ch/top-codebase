@@ -87,6 +87,7 @@
             - "persistantvolume"
             - "persistantvolumeclaim"
             - "serviceaccounts"
+            - "pods/exec"
           verbs:
             - "get"
             - "list"
