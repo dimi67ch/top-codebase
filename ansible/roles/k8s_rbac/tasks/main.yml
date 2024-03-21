@@ -179,4 +179,4 @@
     kind: Namespace
     name: "user{{ item }}"
   loop: "{{ users_to_delete.user_input.split(',') }}"
-  when: confirm_deletion.user_input | lower == "y" and usercount | int != 0 and usercount | int < namespacecount | int
+  when: usercount | int != 0 and usercount | int < namespacecount | int and confirm_deletion.user_input | lower == "y"
