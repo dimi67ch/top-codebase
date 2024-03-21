@@ -84,8 +84,8 @@
             - "statefulsets"
             - "daemonsets"
             - "jobs"
-            - "persistantvolume"
-            - "persistantvolumeclaim"
+            - "persistentvolumes"
+            - "persistentvolumeclaims"
             - "serviceaccounts"
             - "pods/exec"
           verbs:
