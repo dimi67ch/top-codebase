@@ -34,6 +34,8 @@ deployments:
   # DEPLOY OWN HELM CHARTS (Port 30000 - 32000)
   - name: "secplay-website"
     chart_ref: "gitlab-rlp/secplay-website" # Port = 80 (ingress)
+    update_repo_cache: true
+
 
   # WEBSHOP FROM FULLSTACK PROJECT
   # - name: "webshop"
@@ -105,10 +107,10 @@ deployments:
       - value: "service.nodePort=32070" # Port
 
   # UBUNTU
-  - name: "ubuntu"
-    chart_ref: "gitlab-rlp/ubuntu"
-    set_values:
-      - value: "service.type=LoadBalancer"
+  # - name: "ubuntu"
+  #   chart_ref: "gitlab-rlp/ubuntu"
+  #   set_values:
+  #     - value: "service.type=LoadBalancer"
 
   # PROMETHEUS
   - name: "prometheus"

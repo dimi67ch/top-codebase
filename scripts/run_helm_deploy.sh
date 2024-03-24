@@ -4,7 +4,7 @@
 
 echo "Deploying via Helm..."
 
-ansible all -i ./ansible/inventory.ini -m include_role -a name=ansible/roles/helm_deploy -e @ansible/group_vars/all.yml
+ansible all -i ../ansible/inventory.ini -m include_role -a name=../ansible/roles/helm_deploy -e @../ansible/group_vars/all.yml
 
 if [ $(echo $?) == 0 ]; then
   echo "Deployments succeeded!"

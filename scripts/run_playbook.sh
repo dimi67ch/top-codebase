@@ -4,7 +4,7 @@
 
 echo "Executing the Playbook..."
 
-ansible-playbook -i ./ansible/inventory.ini ./ansible/playbook.yml
+ansible-playbook -i ../ansible/inventory.ini ../ansible/playbook.yml
 
 if [ $(echo $?) == 0 ]; then
   echo "Playbook succeeded!"
