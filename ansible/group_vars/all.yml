@@ -99,18 +99,26 @@ deployments:
     set_values:
       - value: "service.httpNodePort=32060" # Port
 
-  # STARTSPHERE
-  - name: "startsphere"
-    chart_ref: "gitlab-rlp/startsphere"
-    set_values:
-      - value: "service.type=LoadBalancer"
-      - value: "service.nodePort=32070" # Port
-
-  # UBUNTU
-  # - name: "ubuntu"
-  #   chart_ref: "gitlab-rlp/ubuntu"
+  # # STARTSPHERE
+  # - name: "startsphere"
+  #   chart_ref: "gitlab-rlp/startsphere"
   #   set_values:
   #     - value: "service.type=LoadBalancer"
+  #     - value: "service.nodePort=32070" # Port
+
+  # SECURESPHERE
+  # - name: "securesphere"
+  #   chart_ref: "gitlab-rlp/securesphere"
+  #   set_values:
+  #     - value: "service.type=LoadBalancer"
+
+  # HELLSPHERE
+  # - name: "hellsphere"
+  #   chart_ref: "gitlab-rlp/hellsphere"
+  #   set_values:
+  #     - value: "service.type=LoadBalancer"
+  #     - value: "service.nodePort=32110" # Port
+
 
   # PROMETHEUS
   - name: "prometheus"
